@@ -10,29 +10,56 @@ import UIKit
 final class ImagesListCell: UITableViewCell {
     static let reuseIdentifier = "ImagesListCell"
     
+    private struct Constant {
+        static let baseCornerRadius: CGFloat = 16.0
+        static let distanceBetweenCell: CGFloat = 4.0
+        static let gradientHeight: CGFloat = 30.0
+        static let labelDistance: CGFloat = 8
+    }
+    
     // MARK: - Lifecycle
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         
         backgroundColor = .clear
         contentView.layer.masksToBounds = true
-        contentView.layer.cornerRadius = 16
+        contentView.layer.cornerRadius = Constant.baseCornerRadius
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
+    override func layoutSubviews() {
+         super.layoutSubviews()
+        
+        contentView.frame = contentView.frame.inset(by: .init(
+            top: Constant.distanceBetweenCell,
+            left: .zero,
+            bottom: Constant.distanceBetweenCell,
+            right: .zero
+        ))
+    }
+    
+    // MARK: Properties
+    private var isLikeActive = false
+    
+    private lazy var dateFormatter: DateFormatter = {
+        let formatter = DateFormatter()
+        formatter.dateStyle = .long
+        formatter.timeStyle = .none
+        return formatter
+    }()
+    
     // MARK: - UI
     private lazy var mainImageView: UIImageView = {
-        let imageView = UIImageView(image: .init(named: "0"))
+        let imageView = UIImageView()
         imageView.contentMode = .scaleAspectFill
         return imageView
     }()
 
     private lazy var dateLabel: UILabel = {
         let label = UILabel()
-        label.text = "27 августа 2022"
         label.textColor = .ypWhite
         label.font = .systemFont(ofSize: 13)
         
@@ -43,7 +70,7 @@ final class ImagesListCell: UITableViewCell {
         let gradientView = GradientView()
         
         gradientView.clipsToBounds = true
-        gradientView.layer.cornerRadius = 16
+        gradientView.layer.cornerRadius = Constant.baseCornerRadius
         gradientView.layer.maskedCorners = [.layerMinXMaxYCorner, .layerMaxXMaxYCorner]
         
         gradientView.configure(colors: [
@@ -56,13 +83,26 @@ final class ImagesListCell: UITableViewCell {
     
     private lazy var likeButton: UIButton = {
         let button = UIButton()
-        button.setBackgroundImage(.noActiveImage, for: .normal)
         button.addTarget(self, action: #selector(likeButtonPressed), for: .touchUpInside)
         return button
     }()
     
     // MARK: - Configure methods
-    func setupCell() {
+    func configureCell(with imageName: String, isLikeActive: Bool) {
+        guard let image = UIImage(named: imageName) else { return }
+        self.isLikeActive = isLikeActive
+        
+        mainImageView = .init(image: image)
+        dateLabel.text = dateFormatter.string(from: Date())
+        likeButton.setBackgroundImage(
+            isLikeActive ? .activeImage : .noActiveImage,
+            for: .normal
+        )
+        
+        setupUI()
+    }
+    
+    private func setupUI() {
         mainImageView
             .placedOn(contentView)
             .pin(to: contentView)
@@ -78,17 +118,21 @@ final class ImagesListCell: UITableViewCell {
             gradientView.left.constraint(equalTo: contentView.left),
             gradientView.right.constraint(equalTo: contentView.right),
             gradientView.bottom.constraint(equalTo: contentView.bottom),
-            gradientView.height.constraint(equalToConstant: 30)
+            gradientView.height.constraint(equalToConstant: Constant.gradientHeight)
         ])
         
         dateLabel.placedOn(contentView)
         NSLayoutConstraint.activate([
-            dateLabel.left.constraint(equalTo: contentView.left, constant: 8),
-            dateLabel.bottom.constraint(equalTo: contentView.bottom, constant: -8)
+            dateLabel.left.constraint(equalTo: contentView.left, constant: Constant.labelDistance),
+            dateLabel.bottom.constraint(equalTo: contentView.bottom, constant: -Constant.labelDistance)
         ])
     }
     
     @objc func likeButtonPressed() {
-        likeButton.setBackgroundImage(.activeImage, for: .normal)
+        isLikeActive = !isLikeActive
+        likeButton.setBackgroundImage(
+            isLikeActive ? .activeImage : .noActiveImage,
+            for: .normal
+        )
     }
 }

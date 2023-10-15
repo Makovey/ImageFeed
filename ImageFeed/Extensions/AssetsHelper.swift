@@ -1,5 +1,5 @@
 //
-//  Assets.swift
+//  AssetsHelper.swift
 //  ImageFeed
 //
 //  Created by MAKOVEY Vladislav on 09.10.2023.
