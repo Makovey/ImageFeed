@@ -16,6 +16,13 @@ extension UIView {
     var width: NSLayoutDimension { widthAnchor }
     var centerY: NSLayoutYAxisAnchor { centerYAnchor }
     var centerX: NSLayoutXAxisAnchor { centerXAnchor }
+    
+    var safeTop: NSLayoutYAxisAnchor { safeAreaLayoutGuide.topAnchor }
+    var safeBottom: NSLayoutYAxisAnchor { safeAreaLayoutGuide.bottomAnchor }
+    var safeLeft: NSLayoutXAxisAnchor { safeAreaLayoutGuide.leadingAnchor }
+    var safeRight: NSLayoutXAxisAnchor { safeAreaLayoutGuide.trailingAnchor }
+    var safeHeight: NSLayoutDimension { safeAreaLayoutGuide.heightAnchor }
+    var safeWidth: NSLayoutDimension { safeAreaLayoutGuide.widthAnchor }
 }
 
 extension UIView {
