@@ -17,6 +17,7 @@
 		5E1D665D2AD485CE007693DF /* ImagesListCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E1D665C2AD485CE007693DF /* ImagesListCell.swift */; };
 		5E34E19B2ADAFD160056F2D9 /* GradientView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E34E19A2ADAFD160056F2D9 /* GradientView.swift */; };
 		5E8133422AE85D8500688D6A /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E8133412AE85D8500688D6A /* ProfileViewController.swift */; };
+		5EDF92652AEACB210042DD43 /* TabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EDF92642AEACB210042DD43 /* TabBarController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -32,6 +33,7 @@
 		5E1D665C2AD485CE007693DF /* ImagesListCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagesListCell.swift; sourceTree = "<group>"; };
 		5E34E19A2ADAFD160056F2D9 /* GradientView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GradientView.swift; sourceTree = "<group>"; };
 		5E8133412AE85D8500688D6A /* ProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
+		5EDF92642AEACB210042DD43 /* TabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -79,7 +81,8 @@
 			isa = PBXGroup;
 			children = (
 				5E1D664B2AD3E8B8007693DF /* ImagesList */,
-				5E8133412AE85D8500688D6A /* ProfileViewController.swift */,
+				5EDF92632AEACAF50042DD43 /* Profile */,
+				5EDF92642AEACB210042DD43 /* TabBarController.swift */,
 			);
 			path = Presentation;
 			sourceTree = "<group>";
@@ -87,7 +90,8 @@
 		5E1D664B2AD3E8B8007693DF /* ImagesList */ = {
 			isa = PBXGroup;
 			children = (
-				5E1D665B2AD485BA007693DF /* UI */,
+				5E34E1992ADAFB180056F2D9 /* Cell */,
+				5E1D663A2AD01C0C007693DF /* ImagesListViewController.swift */,
 			);
 			path = ImagesList;
 			sourceTree = "<group>";
@@ -101,15 +105,6 @@
 			path = Extensions;
 			sourceTree = "<group>";
 		};
-		5E1D665B2AD485BA007693DF /* UI */ = {
-			isa = PBXGroup;
-			children = (
-				5E34E1992ADAFB180056F2D9 /* Cell */,
-				5E1D663A2AD01C0C007693DF /* ImagesListViewController.swift */,
-			);
-			path = UI;
-			sourceTree = "<group>";
-		};
 		5E34E1992ADAFB180056F2D9 /* Cell */ = {
 			isa = PBXGroup;
 			children = (
@@ -117,6 +112,14 @@
 				5E1D665C2AD485CE007693DF /* ImagesListCell.swift */,
 			);
 			path = Cell;
+			sourceTree = "<group>";
+		};
+		5EDF92632AEACAF50042DD43 /* Profile */ = {
+			isa = PBXGroup;
+			children = (
+				5E8133412AE85D8500688D6A /* ProfileViewController.swift */,
+			);
+			path = Profile;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -192,6 +195,7 @@
 				5E1D663B2AD01C0C007693DF /* ImagesListViewController.swift in Sources */,
 				5E1D664F2AD3E8F6007693DF /* AssetsHelper.swift in Sources */,
 				5E1D66512AD3F0D4007693DF /* UIView+Ext.swift in Sources */,
+				5EDF92652AEACB210042DD43 /* TabBarController.swift in Sources */,
 				5E1D66372AD01C0C007693DF /* AppDelegate.swift in Sources */,
 				5E34E19B2ADAFD160056F2D9 /* GradientView.swift in Sources */,
 				5E1D66392AD01C0C007693DF /* SceneDelegate.swift in Sources */,
