@@ -74,11 +74,7 @@ final class ProfileViewController: UIViewController {
         view.backgroundColor = .ypBlack
         setupUI()
     }
-    
-    override var preferredStatusBarStyle: UIStatusBarStyle {
-        .lightContent
-    }
-    
+
     // MARK: - Private
     
     private func setupUI() {

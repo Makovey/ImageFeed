@@ -26,7 +26,7 @@ final class TabBarController: UITabBarController {
     
     private func setupViewControllers() {
         let imageList = assembleNavigationController(for: ImageListAssembly.assemble(), image: .tabImageList)
-        let profile = assembleNavigationController(for: ProfileViewController(), image: .tabProfile)
+        let profile = assembleNavigationController(for: ProfileViewAssembly.assemble(), image: .tabProfile)
         
         viewControllers = [imageList, profile]
     }
@@ -35,10 +35,9 @@ final class TabBarController: UITabBarController {
         for viewController: UIViewController,
         image: UIImage
     ) -> UIViewController {
-        let navigationController = UINavigationController(rootViewController: viewController)
-        navigationController.title = title
-        navigationController.tabBarItem.image = image
-        navigationController.isNavigationBarHidden = true
-        return navigationController
+        viewController.title = title
+        viewController.tabBarItem.image = image
+        viewController.overrideUserInterfaceStyle = .dark
+        return viewController
     }
 }

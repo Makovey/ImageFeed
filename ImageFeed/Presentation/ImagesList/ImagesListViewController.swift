@@ -25,22 +25,19 @@ final class ImagesListViewController: UIViewController {
         tableView.separatorStyle = .none
         tableView.dataSource = self
         tableView.delegate = self
+        tableView.showsVerticalScrollIndicator = false
         tableView.backgroundColor = .ypBlack
         tableView.register(ImagesListCell.self, forCellReuseIdentifier: ImagesListCell.reuseIdentifier)
         return tableView
     }()
 
-    // MARK: - Override
+    // MARK: - Overrides
 
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .ypBlack
         
         setupUI()
-    }
-    
-    override var preferredStatusBarStyle: UIStatusBarStyle {
-        .lightContent
     }
     
     // MARK: - Private
@@ -56,7 +53,8 @@ final class ImagesListViewController: UIViewController {
 
 extension ImagesListViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        presenter?.didImageTapped(imageName: photosName[indexPath.row])
+        let image = UIImage(named: photosName[indexPath.row])
+        presenter?.didImageTapped(image: image)
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {

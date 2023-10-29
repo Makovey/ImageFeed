@@ -7,9 +7,20 @@
 
 import UIKit
 
-protocol IImageListRouter {}
+protocol IImageListRouter {
+    func openSingleImage(image: UIImage?)
+}
 
 final class ImageListRouter: IImageListRouter {
     
+    // MARK: - Dependencies
+
     weak var viewController: UIViewController?
+
+    func openSingleImage(image: UIImage?) {
+        let destination = SingleImageAssembly.assemble()
+        destination.mainImage = image
+
+        viewController?.present(destination, animated: true)
+    }
 }

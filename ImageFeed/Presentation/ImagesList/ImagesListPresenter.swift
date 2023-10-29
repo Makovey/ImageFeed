@@ -5,10 +5,10 @@
 //  Created by MAKOVEY Vladislav on 29.10.2023.
 //
 
-import Foundation
+import UIKit
 
 protocol IImageListPresenter {
-    func didImageTapped(imageName: String)
+    func didImageTapped(image: UIImage?)
 }
 
 final class ImageListPresenter: IImageListPresenter {
@@ -17,7 +17,7 @@ final class ImageListPresenter: IImageListPresenter {
     
     var router: IImageListRouter?
     
-    func didImageTapped(imageName: String) {
-        //
+    func didImageTapped(image: UIImage?) {
+        router?.openSingleImage(image: image)
     }
 }

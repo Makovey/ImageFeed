@@ -20,4 +20,5 @@ extension UIImage {
     static let stubUserImage = UIImage(named: "StubUserImage") ?? .init()
     static let tabImageList = UIImage(named: "TabImageListActive") ?? .init()
     static let tabProfile = UIImage(named: "TabProfileActive") ?? .init()
+    static let backwardArrow = UIImage(named: "BackwardArrow") ?? .init()
 }

@@ -98,7 +98,7 @@ final class ImagesListCell: UITableViewCell {
         
         mainImageView = .init(image: image)
         dateLabel.text = dateFormatter.string(from: Date())
-        likeButton.setBackgroundImage(
+        likeButton.setImage(
             isLikeActive ? .activeLike : .disableLike,
             for: .normal
         )
@@ -134,7 +134,7 @@ final class ImagesListCell: UITableViewCell {
     
     @objc private func likeButtonPressed() {
         isLikeActive = !isLikeActive
-        likeButton.setBackgroundImage(
+        likeButton.setImage(
             isLikeActive ? .activeLike : .disableLike,
             for: .normal
         )
