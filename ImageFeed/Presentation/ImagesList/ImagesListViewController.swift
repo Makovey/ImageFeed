@@ -15,6 +15,7 @@ final class ImagesListViewController: UIViewController {
     
     // MARK: - Dependencies
 
+    var presenter: IImageListPresenter?
     private let photosName: [String] = Array(0..<20).map{ "\($0)" }
     
     // MARK: - UI
@@ -54,7 +55,9 @@ final class ImagesListViewController: UIViewController {
 // MARK: - UITableViewDelegate
 
 extension ImagesListViewController: UITableViewDelegate {
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {}
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        presenter?.didImageTapped(imageName: photosName[indexPath.row])
+    }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         guard let image = UIImage(named: photosName[indexPath.row]) else {

@@ -25,7 +25,7 @@ final class TabBarController: UITabBarController {
     // MARK: = Private
     
     private func setupViewControllers() {
-        let imageList = assembleNavigationController(for: ImagesListViewController(), image: .tabImageList)
+        let imageList = assembleNavigationController(for: ImageListAssembly.assemble(), image: .tabImageList)
         let profile = assembleNavigationController(for: ProfileViewController(), image: .tabProfile)
         
         viewControllers = [imageList, profile]
