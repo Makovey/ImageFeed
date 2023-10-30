@@ -20,7 +20,7 @@ final class ImageListRouter: IImageListRouter {
     func openSingleImage(image: UIImage?) {
         let destination = SingleImageAssembly.assemble()
         destination.mainImage = image
-
+        destination.modalPresentationStyle = .fullScreen
         viewController?.present(destination, animated: true)
     }
 }

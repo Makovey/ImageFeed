@@ -10,7 +10,7 @@ import UIKit
 final class SingleImageAssembly {
     static func assemble() -> SingleImageViewController {
         let view = SingleImageViewController()
-        
+        view.overrideUserInterfaceStyle = .dark
         return view
     }
 }
