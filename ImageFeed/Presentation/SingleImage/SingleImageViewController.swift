@@ -1,0 +1,138 @@
+//
+//  SingleImageViewController.swift
+//  ImageFeed
+//
+//  Created by MAKOVEY Vladislav on 29.10.2023.
+//
+
+import UIKit
+
+final class SingleImageViewController: UIViewController {
+    private struct Constant {
+        static let topButtonSpacing: CGFloat = 12.0
+        static let shareButtonSpacing: CGFloat = 16.0
+        static let baseInset: CGFloat = 8.0
+        
+        static let minimumZoomScale = 0.1
+        static let maximumZoomScale = 1.25
+    }
+    
+    // MARK: - Dependencies
+    
+    var mainImage: UIImage?
+    
+    // MARK: - UI
+    
+    private lazy var scrollView: UIScrollView = {
+        let scrollView = UIScrollView()
+        scrollView.delegate = self
+        scrollView.minimumZoomScale = Constant.minimumZoomScale
+        scrollView.maximumZoomScale = Constant.maximumZoomScale
+        return scrollView
+    }()
+    
+    private lazy var imageView: UIImageView = {
+        let imageView = UIImageView()
+        imageView.contentMode = .scaleAspectFill
+        return imageView
+    }()
+    
+    private lazy var backButton: UIButton = {
+        let button = UIButton()
+        button.setImage(.backwardArrow, for: .normal)
+        button.addTarget(self, action: #selector(backButtonTapped), for: .touchUpInside)
+        return button
+    }()
+    
+    private lazy var shareButton: UIButton = {
+        let button = UIButton()
+        button.setImage(.sharing, for: .normal)
+        button.addTarget(self, action: #selector(shareButtonTapped), for: .touchUpInside)
+        return button
+    }()
+    
+    // MARK: - Lifecycle
+
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        view.backgroundColor = .ypBlack
+        
+        setupUI()
+        setupInitialState()
+    }
+
+    
+    // MARK: - Private
+    
+    private func setupUI() {
+        scrollView
+            .placedOn(view)
+            .pin(to: view)
+
+        imageView
+            .placedOn(scrollView)
+            .pin(to: scrollView)
+                
+        backButton
+            .placedOn(view)
+        
+        NSLayoutConstraint.activate([
+            backButton.left.constraint(equalTo: view.left, constant: Constant.baseInset),
+            backButton.top.constraint(equalTo: view.safeTop, constant: Constant.topButtonSpacing)
+        ])
+        
+        shareButton
+            .placedOn(view)
+
+        NSLayoutConstraint.activate([
+            shareButton.centerX.constraint(equalTo: view.centerX),
+            shareButton.bottom.constraint(equalTo: view.safeBottom, constant: -Constant.shareButtonSpacing)
+        ])
+    }
+    
+    private func setupInitialState() {
+        if let image = mainImage {
+            imageView.image = image
+            rescaleAndCenterImageInScrollView(image: image)
+        }
+    }
+    
+    @objc private func backButtonTapped() {
+        dismiss(animated: true)
+    }
+    
+    @objc private func shareButtonTapped() {
+        guard let image = imageView.image else { return }
+        let share = UIActivityViewController(
+            activityItems: [image],
+            applicationActivities: nil
+        )
+        present(share, animated: true)
+    }
+    
+    private func rescaleAndCenterImageInScrollView(image: UIImage) {
+        let minZoomScale = scrollView.minimumZoomScale
+        let maxZoomScale = scrollView.maximumZoomScale
+        view.layoutIfNeeded()
+        let visibleRectSize = scrollView.bounds.size
+        let imageSize = image.size
+        
+        let hScale = visibleRectSize.width / imageSize.width
+        let vScale = visibleRectSize.height / imageSize.height
+        let scale = min(maxZoomScale, max(minZoomScale, max(hScale, vScale)))
+        
+        scrollView.setZoomScale(scale, animated: false)
+        scrollView.layoutIfNeeded()
+        
+        let newContentSize = scrollView.contentSize
+        let x = (newContentSize.width - visibleRectSize.width) / 2
+        let y = (newContentSize.height - visibleRectSize.height) / 2
+        scrollView.setContentOffset(CGPoint(x: x, y: y), animated: false)
+    }
+}
+
+extension SingleImageViewController: UIScrollViewDelegate {
+    func viewForZooming(in scrollView: UIScrollView) -> UIView? {
+        imageView
+    }
+}

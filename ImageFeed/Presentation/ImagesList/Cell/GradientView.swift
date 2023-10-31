@@ -9,9 +9,11 @@ import UIKit
 
 final class GradientView: UIView {
     // MARK: - Dependencies
+
     let gradient = CAGradientLayer()
     
     // MARK: - Lifecycle
+
     override init(frame: CGRect) {
         super.init(frame: frame)
         layer.insertSublayer(gradient, at: 0)
@@ -27,6 +29,7 @@ final class GradientView: UIView {
     }
     
     // MARK: - Public
+
     func configure(colors: [CGColor], locations: [NSNumber]) {
         gradient.colors = colors as [Any]
         gradient.locations = locations

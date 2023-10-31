@@ -17,33 +17,10 @@ final class ImagesListCell: UITableViewCell {
         static let labelDistance: CGFloat = 8
     }
     
-    // MARK: - Lifecycle
-    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
-        super.init(style: style, reuseIdentifier: reuseIdentifier)
-        
-        backgroundColor = .clear
-        contentView.layer.masksToBounds = true
-        contentView.layer.cornerRadius = Constant.baseCornerRadius
-    }
-    
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-    
-    override func layoutSubviews() {
-         super.layoutSubviews()
-        
-        contentView.frame = contentView.frame.inset(by: .init(
-            top: Constant.distanceBetweenCell,
-            left: .zero,
-            bottom: Constant.distanceBetweenCell,
-            right: .zero
-        ))
-    }
-    
-    // MARK: Properties
+    // MARK: - Properties
+
     private var isLikeActive = false
-    
+
     private lazy var dateFormatter: DateFormatter = {
         let formatter = DateFormatter()
         formatter.dateStyle = .long
@@ -52,6 +29,7 @@ final class ImagesListCell: UITableViewCell {
     }()
     
     // MARK: - UI
+
     private lazy var mainImageView: UIImageView = {
         let imageView = UIImageView()
         imageView.contentMode = .scaleAspectFill
@@ -87,15 +65,41 @@ final class ImagesListCell: UITableViewCell {
         return button
     }()
     
+    // MARK: - Lifecycle
+
+    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
+        super.init(style: style, reuseIdentifier: reuseIdentifier)
+        
+        backgroundColor = .clear
+        contentView.layer.masksToBounds = true
+        contentView.layer.cornerRadius = Constant.baseCornerRadius
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    override func layoutSubviews() {
+         super.layoutSubviews()
+        
+        contentView.frame = contentView.frame.inset(by: .init(
+            top: Constant.distanceBetweenCell,
+            left: .zero,
+            bottom: Constant.distanceBetweenCell,
+            right: .zero
+        ))
+    }
+    
     // MARK: - Configure methods
+
     func configureCell(with imageName: String, isLikeActive: Bool) {
         guard let image = UIImage(named: imageName) else { return }
         self.isLikeActive = isLikeActive
         
         mainImageView = .init(image: image)
         dateLabel.text = dateFormatter.string(from: Date())
-        likeButton.setBackgroundImage(
-            isLikeActive ? .activeImage : .noActiveImage,
+        likeButton.setImage(
+            isLikeActive ? .activeLike : .disableLike,
             for: .normal
         )
         
@@ -128,10 +132,10 @@ final class ImagesListCell: UITableViewCell {
         ])
     }
     
-    @objc func likeButtonPressed() {
+    @objc private func likeButtonPressed() {
         isLikeActive = !isLikeActive
-        likeButton.setBackgroundImage(
-            isLikeActive ? .activeImage : .noActiveImage,
+        likeButton.setImage(
+            isLikeActive ? .activeLike : .disableLike,
             for: .normal
         )
     }
