@@ -55,6 +55,7 @@ final class ProfileViewController: UIViewController {
         label.text = "Hello, world!"
         label.font = .systemFont(ofSize: 13)
         label.textColor = .ypWhite
+        label.numberOfLines = 0
         return label
     }()
     
