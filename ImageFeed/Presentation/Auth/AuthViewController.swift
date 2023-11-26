@@ -17,6 +17,10 @@ final class AuthViewController: UIViewController {
         static let fontButton: CGFloat = 17
     }
     
+    // MARK: - Properties
+    
+    var presenter: IAuthPresenter?
+    
     // MARK: - UI
 
     private lazy var mainImage: UIImageView = {
@@ -72,7 +76,17 @@ final class AuthViewController: UIViewController {
     
     @objc
     private func entryButtonTapped() {
-        
+        presenter?.didLoginButtonTapped()
+    }
+}
+
+// MARK: - WebViewViewControllerDelegate
+
+extension AuthViewController: IWebViewViewControllerDelegate {
+    func webViewViewController(_ vc: WebViewViewController, didAuthenticateWithCode code: String) {
     }
     
+    func webViewViewControllerDidCancel(_ vc: WebViewViewController) {
+        vc.dismiss(animated: true)
+    }
 }
