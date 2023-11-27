@@ -40,6 +40,13 @@ final class WebViewViewController: UIViewController {
         return button
     }()
     
+    private lazy var progressView: UIProgressView = {
+        let progress = UIProgressView(progressViewStyle: .default)
+        progress.trackTintColor = .ypGray
+        progress.progressTintColor = .ypBlack
+        return progress.forAutolayout()
+    }()
+    
     // MARK: - Overrides
     
     override func viewDidLoad() {
@@ -48,6 +55,39 @@ final class WebViewViewController: UIViewController {
         
         setupUI()
         setupInitialState()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+
+        webView.addObserver(
+            self,
+            forKeyPath: #keyPath(WKWebView.estimatedProgress),
+            options: .new,
+            context: nil
+        )
+    }
+    
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+
+        webView.removeObserver(
+            self, forKeyPath:#keyPath(WKWebView.estimatedProgress),
+            context: nil
+        )
+    }
+    
+    override func observeValue(
+        forKeyPath keyPath: String?,
+        of object: Any?,
+        change: [NSKeyValueChangeKey : Any]?,
+        context: UnsafeMutableRawPointer?
+    ) {
+        guard keyPath == #keyPath(WKWebView.estimatedProgress) else {
+            super.observeValue(forKeyPath: keyPath, of: object, change: change, context: context)
+            return
+        }
+        updateProgress()
     }
     
     // MARK: - Private
@@ -62,6 +102,13 @@ final class WebViewViewController: UIViewController {
             backButton.left.constraint(equalTo: view.left, constant: Constant.baseInset),
             backButton.top.constraint(equalTo: view.safeTop, constant: Constant.topButtonSpacing)
         ])
+        
+        progressView.placedOn(view)
+        NSLayoutConstraint.activate([
+            progressView.top.constraint(equalTo: backButton.bottom),
+            progressView.left.constraint(equalTo: view.left),
+            progressView.right.constraint(equalTo: view.right)
+        ])
     }
     
     private func setupInitialState() {
@@ -69,9 +116,14 @@ final class WebViewViewController: UIViewController {
         webView.load(request)
     }
     
+    private func updateProgress() {
+        progressView.setProgress(Float(webView.estimatedProgress), animated: true)
+        progressView.isHidden = fabs(webView.estimatedProgress - 1.0) <= 0.0001
+    }
+    
     @objc
     private func backButtonTapped() {
-        dismiss(animated: true)
+        delegate?.webViewViewControllerDidCancel(self)
     }
 }
 
@@ -87,7 +139,7 @@ extension WebViewViewController: WKNavigationDelegate {
             decisionHandler(.allow)
             return
         }
-
+        delegate?.webViewViewController(self, didAuthenticateWithCode: code)
         decisionHandler(.cancel)
     }
 }
