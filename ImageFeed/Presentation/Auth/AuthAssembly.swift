@@ -11,7 +11,10 @@ final class AuthAssembly {
     static func assemble() -> UIViewController {
         let view = AuthViewController()
         let router = AuthRouter()
-        let presenter = AuthPresenter()
+        
+        let service: IOAuth2Service = OAuth2Service()
+        let storage: IOAuth2TokenStorage = OAuth2TokenStorage()
+        let presenter = AuthPresenter(service: service, storage: storage)
         
         view.presenter = presenter
         router.viewController = view
