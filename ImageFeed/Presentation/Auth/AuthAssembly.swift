@@ -8,15 +8,13 @@
 import UIKit
 
 final class AuthAssembly {
-    static func assemble() -> UIViewController {
+    static func assemble(delegate: IAuthViewControllerDelegate) -> UIViewController {
         let view = AuthViewController()
         let router = AuthRouter()
-        
-        let service: IOAuth2Service = OAuth2Service()
-        let storage: IOAuth2TokenStorage = OAuth2TokenStorage()
-        let presenter = AuthPresenter(service: service, storage: storage)
+        let presenter = AuthPresenter()
         
         view.presenter = presenter
+        view.delegate = delegate
         router.viewController = view
         presenter.router = router
         

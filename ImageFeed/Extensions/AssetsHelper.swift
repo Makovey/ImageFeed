@@ -24,4 +24,5 @@ extension UIImage {
     static let backwardBlackArrow = UIImage(named: "BackwardBlackArrow") ?? .init()
     static let sharing = UIImage(named: "Sharing") ?? .init()
     static let authScreenImage  = UIImage(named: "AuthImage") ?? .init()
+    static let launchLogo  = UIImage(named: "LaunchLogo") ?? .init()
 }

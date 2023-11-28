@@ -7,6 +7,10 @@
 
 import UIKit
 
+protocol IAuthViewControllerDelegate: AnyObject {
+    func authViewController(_ vc: AuthViewController, didAuthenticateWithCode code: String)
+}
+
 final class AuthViewController: UIViewController {
     private struct Constant {
         static let basicCornerRadius: CGFloat = 16
@@ -20,6 +24,7 @@ final class AuthViewController: UIViewController {
     // MARK: - Properties
     
     var presenter: IAuthPresenter?
+    weak var delegate: IAuthViewControllerDelegate?
     
     // MARK: - UI
 
@@ -84,8 +89,7 @@ final class AuthViewController: UIViewController {
 
 extension AuthViewController: IWebViewViewControllerDelegate {
     func webViewViewController(_ vc: WebViewViewController, didAuthenticateWithCode code: String) {
-        vc.dismiss(animated: true)
-        presenter?.didAuthenticated(with: code)
+        delegate?.authViewController(self, didAuthenticateWithCode: code)
     }
     
     func webViewViewControllerDidCancel(_ vc: WebViewViewController) {
