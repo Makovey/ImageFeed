@@ -61,9 +61,7 @@ final class OAuth2Service: IOAuth2Service {
             
             do {
                 let responseData = try JSONDecoder().decode(OAuthTokenResponse.self, from: data)
-                DispatchQueue.main.async {
-                    completion(.success(responseData))
-                }
+                completion(.success(responseData))
             } catch {
                 completion(.failure(.invalidParsingError))
             }

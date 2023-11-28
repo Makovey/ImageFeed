@@ -43,12 +43,14 @@ final class SplashPresenter: ISplashPresenter {
         service.fetchToken(code: code) { [weak self] result in
             guard let self else { return }
 
-            switch result {
-            case .success(let success):
-                self.storage.token = success.accessToken
-                self.router?.openImageList()
-            case .failure:
-                break // TODO: error handling
+            DispatchQueue.main.async {
+                switch result {
+                case .success(let success):
+                    self.storage.token = success.accessToken
+                    self.router?.openImageList()
+                case .failure:
+                    break // TODO: error handling
+                }
             }
         }
     }
