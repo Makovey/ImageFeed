@@ -9,7 +9,7 @@ import Foundation
 
 protocol ISplashPresenter {
     func checkUserAuth()
-    func didAuthenticated(with code: String)
+    func didAuthenticated(with code: String, completion: @escaping () -> Void)
 }
 
 final class SplashPresenter: ISplashPresenter {
@@ -39,7 +39,7 @@ final class SplashPresenter: ISplashPresenter {
         router?.openImageList()
     }
     
-    func didAuthenticated(with code: String) {
+    func didAuthenticated(with code: String, completion: @escaping () -> Void) {
         service.fetchToken(code: code) { [weak self] result in
             guard let self else { return }
 
@@ -51,6 +51,7 @@ final class SplashPresenter: ISplashPresenter {
                 case .failure:
                     break // TODO: error handling
                 }
+                completion()
             }
         }
     }

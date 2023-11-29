@@ -5,6 +5,7 @@
 //  Created by MAKOVEY Vladislav on 28.11.2023.
 //
 
+import ProgressHUD
 import UIKit
 
 final class SplashViewController: UIViewController {
@@ -48,7 +49,10 @@ final class SplashViewController: UIViewController {
 
 extension SplashViewController: IAuthViewControllerDelegate {
     func authViewController(_ vc: AuthViewController, didAuthenticateWithCode code: String) {
-        presenter?.didAuthenticated(with: code)
-        vc.dismiss(animated: true)
+        ProgressHUD.show()
+        presenter?.didAuthenticated(with: code) {
+            ProgressHUD.dismiss()
+            vc.dismiss(animated: true)
+        }
     }
 }
