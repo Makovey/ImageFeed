@@ -1,0 +1,9 @@
+/* 
+  Localizable.strings
+  ImageFeed
+
+  Created by MAKOVEY Vladislav on 24.11.2023.
+  
+*/
+
+"auth.button.title" = "Войти";
