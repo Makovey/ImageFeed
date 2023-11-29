@@ -8,7 +8,7 @@
 import Foundation
 
 protocol IOAuth2Service {
-    func fetchToken(code: String, completion: @escaping (Result<OAuthTokenResponse, OAuthServiceError>) -> Void)
+    func fetchToken(code: String, completion: @escaping (Result<OAuthTokenResponse, OAuth2ServiceError>) -> Void)
 }
 
 final class OAuth2Service: IOAuth2Service {
@@ -18,7 +18,7 @@ final class OAuth2Service: IOAuth2Service {
         static let authCode = "authorization_code"
     }
     
-    func fetchToken(code: String, completion: @escaping (Result<OAuthTokenResponse, OAuthServiceError>) -> Void) {
+    func fetchToken(code: String, completion: @escaping (Result<OAuthTokenResponse, OAuth2ServiceError>) -> Void) {
         var urlComponents = URLComponents(string: Constant.baseUrl + Constant.tokenUrl)
         
         urlComponents?.queryItems = [
@@ -67,12 +67,4 @@ final class OAuth2Service: IOAuth2Service {
             }
         }.resume()
     }
-}
-
-enum OAuthServiceError: Error {
-    case noInternetConnectionError
-    case serverError
-    case emptyDataError
-    case invalidParsingError
-    case invalidUrlError
 }
