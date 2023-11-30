@@ -18,7 +18,15 @@ final class OAuth2Service: IOAuth2Service {
         static let authCode = "authorization_code"
     }
     
+    private var task: URLSessionTask?
+    private var lastCode: String?
+    
     func fetchToken(code: String, completion: @escaping (Result<OAuthTokenResponse, OAuth2ServiceError>) -> Void) {
+        assert(Thread.isMainThread)
+        guard lastCode != code else { return }
+        task?.cancel()
+        lastCode = code
+
         var urlComponents = URLComponents(string: Constant.baseUrl + Constant.tokenUrl)
         
         urlComponents?.queryItems = [
@@ -43,8 +51,9 @@ final class OAuth2Service: IOAuth2Service {
         request.httpMethod = "POST"
         request.httpBody = Data(query.utf8)
         
-        URLSession.shared.dataTask(with: request) { data, response, error in
+        task = URLSession.shared.dataTask(with: request) { data, response, error in
             guard error == nil else {
+                self.lastCode = nil
                 completion(.failure(.noInternetConnectionError))
                 return
             }
@@ -61,10 +70,14 @@ final class OAuth2Service: IOAuth2Service {
             
             do {
                 let responseData = try JSONDecoder().decode(OAuthTokenResponse.self, from: data)
+                self.task = nil
+                self.lastCode = nil
                 completion(.success(responseData))
             } catch {
                 completion(.failure(.invalidParsingError))
             }
-        }.resume()
+        }
+        
+        task?.resume()
     }
 }

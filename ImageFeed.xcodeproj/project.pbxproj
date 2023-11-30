@@ -34,6 +34,7 @@
 		5E6545EA2B14BD4A004B7510 /* OAuthTokenResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E6545E92B14BD4A004B7510 /* OAuthTokenResponse.swift */; };
 		5E6545EE2B14BF52004B7510 /* OAuth2Service.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E6545ED2B14BF52004B7510 /* OAuth2Service.swift */; };
 		5E6545F02B14FA35004B7510 /* OAuth2TokenStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E6545EF2B14FA35004B7510 /* OAuth2TokenStorage.swift */; };
+		5E6F89B92B18C49500FA6666 /* UIBlockingProgressHUD.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E6F89B82B18C49500FA6666 /* UIBlockingProgressHUD.swift */; };
 		5E8133422AE85D8500688D6A /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E8133412AE85D8500688D6A /* ProfileViewController.swift */; };
 		5E9173922B16685100B8B8A9 /* SplashViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E9173912B16685100B8B8A9 /* SplashViewController.swift */; };
 		5E9173942B16699F00B8B8A9 /* SplashPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E9173932B16699F00B8B8A9 /* SplashPresenter.swift */; };
@@ -76,6 +77,7 @@
 		5E6545E92B14BD4A004B7510 /* OAuthTokenResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OAuthTokenResponse.swift; sourceTree = "<group>"; };
 		5E6545ED2B14BF52004B7510 /* OAuth2Service.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OAuth2Service.swift; sourceTree = "<group>"; };
 		5E6545EF2B14FA35004B7510 /* OAuth2TokenStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OAuth2TokenStorage.swift; sourceTree = "<group>"; };
+		5E6F89B82B18C49500FA6666 /* UIBlockingProgressHUD.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIBlockingProgressHUD.swift; sourceTree = "<group>"; };
 		5E8133412AE85D8500688D6A /* ProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
 		5E9173912B16685100B8B8A9 /* SplashViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplashViewController.swift; sourceTree = "<group>"; };
 		5E9173932B16699F00B8B8A9 /* SplashPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplashPresenter.swift; sourceTree = "<group>"; };
@@ -138,6 +140,7 @@
 				5E1D664A2AD3E8AD007693DF /* Presentation */,
 				5E6545E82B14BD2C004B7510 /* Network */,
 				5E1D664C2AD3E8CE007693DF /* Extensions */,
+				5E6F89BA2B18C49A00FA6666 /* Utils */,
 				5E6545DA2B132795004B7510 /* Secrets */,
 				5E1D66362AD01C0C007693DF /* AppDelegate.swift */,
 				5E1D66382AD01C0C007693DF /* SceneDelegate.swift */,
@@ -247,6 +250,14 @@
 				5EDEB8162B17548400C1EC53 /* OAuth2ServiceError.swift */,
 			);
 			path = Services;
+			sourceTree = "<group>";
+		};
+		5E6F89BA2B18C49A00FA6666 /* Utils */ = {
+			isa = PBXGroup;
+			children = (
+				5E6F89B82B18C49500FA6666 /* UIBlockingProgressHUD.swift */,
+			);
+			path = Utils;
 			sourceTree = "<group>";
 		};
 		5E9173972B1669B400B8B8A9 /* Splash */ = {
@@ -367,6 +378,7 @@
 				5EF41EA02AF7BFC700266AFA /* AppConstant.swift in Sources */,
 				5E1C21A72AEE3E4D007055A4 /* SingleImageViewController.swift in Sources */,
 				5E1434B62B10A4AF008D2602 /* AuthViewController.swift in Sources */,
+				5E6F89B92B18C49500FA6666 /* UIBlockingProgressHUD.swift in Sources */,
 				5E34E19B2ADAFD160056F2D9 /* GradientView.swift in Sources */,
 				5E1D66392AD01C0C007693DF /* SceneDelegate.swift in Sources */,
 				5E9173922B16685100B8B8A9 /* SplashViewController.swift in Sources */,

@@ -49,9 +49,9 @@ final class SplashViewController: UIViewController {
 
 extension SplashViewController: IAuthViewControllerDelegate {
     func authViewController(_ vc: AuthViewController, didAuthenticateWithCode code: String) {
-        ProgressHUD.show()
+        UIBlockingProgressHUD.show()
         presenter?.didAuthenticated(with: code) {
-            ProgressHUD.dismiss()
+            UIBlockingProgressHUD.dismiss()
             vc.dismiss(animated: true)
         }
     }
