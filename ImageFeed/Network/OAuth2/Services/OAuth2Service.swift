@@ -8,7 +8,7 @@
 import Foundation
 
 protocol IOAuth2Service {
-    func fetchToken(code: String, completion: @escaping (Result<OAuthTokenResponse, OAuth2ServiceError>) -> Void)
+    func fetchToken(code: String, completion: @escaping (Result<OAuth2TokenResponse, ServiceError>) -> Void)
 }
 
 final class OAuth2Service: IOAuth2Service {
@@ -21,7 +21,7 @@ final class OAuth2Service: IOAuth2Service {
     private var task: URLSessionTask?
     private var lastCode: String?
     
-    func fetchToken(code: String, completion: @escaping (Result<OAuthTokenResponse, OAuth2ServiceError>) -> Void) {
+    func fetchToken(code: String, completion: @escaping (Result<OAuth2TokenResponse, ServiceError>) -> Void) {
         assert(Thread.isMainThread)
         guard lastCode != code else { return }
         task?.cancel()
@@ -48,7 +48,7 @@ final class OAuth2Service: IOAuth2Service {
         }
         
         var request = URLRequest(url: url)
-        request.httpMethod = "POST"
+        request.httpMethod = HttpMethod.postMethod.rawValue
         request.httpBody = Data(query.utf8)
         
         task = URLSession.shared.dataTask(with: request) { data, response, error in
@@ -69,7 +69,7 @@ final class OAuth2Service: IOAuth2Service {
             }
             
             do {
-                let responseData = try JSONDecoder().decode(OAuthTokenResponse.self, from: data)
+                let responseData = try JSONDecoder().decode(OAuth2TokenResponse.self, from: data)
                 self.task = nil
                 self.lastCode = nil
                 completion(.success(responseData))
