@@ -5,12 +5,10 @@
 //  Created by MAKOVEY Vladislav on 24.10.2023.
 //
 
-import ProgressHUD
 import UIKit
 
 protocol IProfileViewController {
     func updateProfileData(data: ProfileViewModel)
-    func showError(error: String)
 }
 
 final class ProfileViewController: UIViewController {
@@ -80,7 +78,6 @@ final class ProfileViewController: UIViewController {
         super.viewDidLoad()
         view.backgroundColor = .ypBlack
         
-        ProgressHUD.show()
         setupUI()
         presenter?.viewDidLoad()
     }
@@ -122,14 +119,8 @@ final class ProfileViewController: UIViewController {
 
 extension ProfileViewController: IProfileViewController {
     func updateProfileData(data: ProfileViewModel) {
-        ProgressHUD.dismiss()
         nameLabel.text = data.name
         loginNameLabel.text = data.loginName
         descriptionLabel.text = data.bio
-    }
-    
-    func showError(error: String) {
-        ProgressHUD.dismiss()
-        // TODO: handle error
     }
 }

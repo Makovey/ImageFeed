@@ -9,7 +9,7 @@ import UIKit
 
 protocol ISplashRouter {
     func openAuthFlow()
-    func openImageList()
+    func openImageList(profileData: ProfileResult)
 }
 
 final class SplashRouter: ISplashRouter {
@@ -26,10 +26,10 @@ final class SplashRouter: ISplashRouter {
         viewController.present(destination, animated: true)
     }
     
-    func openImageList() {
+    func openImageList(profileData: ProfileResult) {
         guard let window = UIApplication.shared.windows.first else { fatalError("Invalid Configuration") }
         
-        let tabBar = TabBarController()
+        let tabBar = TabBarController(profileData: profileData)
         window.rootViewController = tabBar
         window.makeKeyAndVisible()
         

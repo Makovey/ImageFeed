@@ -16,28 +16,17 @@ final class ProfilePresenter: IProfilePresenter {
     // MARK: - Properties
 
     var view: IProfileViewController?
-    private let service: IProfileService
+    private let profileData: ProfileResult
     
     // MARK: - Init
 
-    init(service: IProfileService) {
-        self.service = service
+    init(profileData: ProfileResult) {
+        self.profileData = profileData
     }
     
     func viewDidLoad() {
-        service.fetchProfile { [weak self] result in
-            guard let self else { return }
-            
-            DispatchQueue.main.async {
-                switch result {
-                case let .success(model):
-                    let viewModel = self.makeProfileViewModel(data: model)
-                    self.view?.updateProfileData(data: viewModel)
-                case let .failure(error):
-                    self.view?.showError(error: error.localizedDescription)
-                }
-            }
-        }
+        let viewModel = makeProfileViewModel(data: profileData)
+        view?.updateProfileData(data: viewModel)
     }
     
     private func makeProfileViewModel(data: ProfileResult) -> ProfileViewModel {

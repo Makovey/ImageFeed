@@ -12,13 +12,20 @@ final class SplashAssembly {
         let view = SplashViewController()
         let router = SplashRouter()
         
-        let service: IOAuth2Service = OAuth2Service()
+        let oAuthService: IOAuth2Service = OAuth2Service()
         let storage: IOAuth2TokenStorage = OAuth2TokenStorage()
-        let presenter = SplashPresenter(service: service, storage: storage)
+        let profileService: IProfileService = ProfileService(storage: storage)
+
+        let presenter = SplashPresenter(
+            oAuthService: oAuthService,
+            profileService: profileService,
+            storage: storage
+        )
         
         view.presenter = presenter
         router.viewController = view
         presenter.router = router
+        presenter.view = view
         
         return view
     }

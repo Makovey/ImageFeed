@@ -9,24 +9,29 @@ import Foundation
 
 protocol ISplashPresenter {
     func checkUserAuth()
-    func didAuthenticated(with code: String, completion: @escaping () -> Void)
+    func didAuthenticated(with code: String)
+    func fetchProfileData()
 }
 
 final class SplashPresenter: ISplashPresenter {
     
     // MARK: - Properties
     
+    var view: ISplashViewController?
     var router: ISplashRouter?
-    private let service: IOAuth2Service
+    private let oAuthService: IOAuth2Service
+    private let profileService: IProfileService
     private var storage: IOAuth2TokenStorage
     
     // MARK: - Init
 
     init(
-        service: IOAuth2Service,
+        oAuthService: IOAuth2Service,
+        profileService: IProfileService,
         storage: IOAuth2TokenStorage
     ) {
-        self.service = service
+        self.oAuthService = oAuthService
+        self.profileService = profileService
         self.storage = storage
     }
     
@@ -36,22 +41,35 @@ final class SplashPresenter: ISplashPresenter {
             return
         }
         
-        router?.openImageList()
+        fetchProfileData()
     }
     
-    func didAuthenticated(with code: String, completion: @escaping () -> Void) {
-        service.fetchToken(code: code) { [weak self] result in
+    func didAuthenticated(with code: String) {
+        oAuthService.fetchToken(code: code) { [weak self] result in
             guard let self else { return }
-
+            
+            switch result {
+            case .success(let success):
+                self.storage.token = success.accessToken
+                self.fetchProfileData()
+            case .failure:
+                break // TODO: error handling
+            }
+        }
+    }
+    
+    func fetchProfileData() {
+        profileService.fetchProfile { [weak self] result in
+            guard let self else { return }
+            
             DispatchQueue.main.async {
                 switch result {
-                case .success(let success):
-                    self.storage.token = success.accessToken
-                    self.router?.openImageList()
+                case let .success(model):
+                    self.view?.dismissAuthScreen()
+                    self.router?.openImageList(profileData: model)
                 case .failure:
                     break // TODO: error handling
                 }
-                completion()
             }
         }
     }

@@ -8,6 +8,10 @@
 import ProgressHUD
 import UIKit
 
+protocol ISplashViewController {
+    func dismissAuthScreen()
+}
+
 final class SplashViewController: UIViewController {
     
     // MARK: - Properties
@@ -50,9 +54,15 @@ final class SplashViewController: UIViewController {
 extension SplashViewController: IAuthViewControllerDelegate {
     func authViewController(_ vc: AuthViewController, didAuthenticateWithCode code: String) {
         UIBlockingProgressHUD.show()
-        presenter?.didAuthenticated(with: code) {
-            UIBlockingProgressHUD.dismiss()
-            vc.dismiss(animated: true)
-        }
+        presenter?.didAuthenticated(with: code)
+    }
+}
+
+// MARK: - ISplashViewController
+
+extension SplashViewController: ISplashViewController {
+    func dismissAuthScreen() {
+        UIBlockingProgressHUD.dismiss()
+        dismiss(animated: true)
     }
 }

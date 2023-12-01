@@ -8,12 +8,9 @@
 import UIKit
 
 final class ProfileAssembly {
-    static func assemble() -> UIViewController {
+    static func assemble(profileData: ProfileResult) -> UIViewController {
         let view = ProfileViewController()
-        
-        let storage: IOAuth2TokenStorage = OAuth2TokenStorage()
-        let service: IProfileService = ProfileService(storage: storage)
-        let presenter = ProfilePresenter(service: service)
+        let presenter = ProfilePresenter(profileData: profileData)
         
         view.presenter = presenter
         presenter.view = view
