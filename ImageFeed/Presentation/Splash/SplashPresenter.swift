@@ -8,9 +8,8 @@
 import Foundation
 
 protocol ISplashPresenter {
-    func checkUserAuth()
+    func loadData()
     func didAuthenticated(with code: String)
-    func fetchProfileData()
 }
 
 final class SplashPresenter: ISplashPresenter {
@@ -35,7 +34,7 @@ final class SplashPresenter: ISplashPresenter {
         self.storage = storage
     }
     
-    func checkUserAuth() {
+    func loadData() {
         guard storage.token != nil else {
             router?.openAuthFlow()
             return
@@ -58,7 +57,7 @@ final class SplashPresenter: ISplashPresenter {
         }
     }
     
-    func fetchProfileData() {
+    private func fetchProfileData() {
         profileService.fetchProfile { [weak self] result in
             guard let self else { return }
             

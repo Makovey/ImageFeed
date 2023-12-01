@@ -30,7 +30,7 @@ final class ProfilePresenter: IProfilePresenter {
     }
     
     private func makeProfileViewModel(data: ProfileResult) -> ProfileViewModel {
-        ProfileViewModel(
+        .init(
             username: data.username ?? "",
             name: "\(data.firstName ?? "") \(data.lastName ?? "")",
             loginName: data.username != nil ? "@\(data.username!)" : "",

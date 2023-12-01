@@ -30,7 +30,7 @@ final class SplashViewController: UIViewController {
         super.viewDidAppear(animated)
         
         setupUI()
-        presenter?.checkUserAuth()
+        presenter?.loadData()
     }
     
     override var preferredStatusBarStyle: UIStatusBarStyle {
