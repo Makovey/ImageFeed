@@ -12,6 +12,7 @@ protocol IRequestPerformer {
         completion: @escaping (Result<ResponseModel, ServiceError>) -> Void
     )
     
+    var pathParams: [URLQueryItem]? { get set }
     var queryParams: [QueryParameter]? { get set }
     var body: [String: Any]? { get set }
 }
@@ -22,6 +23,7 @@ struct RequestPerformer: IRequestPerformer {
         static let authorization = "Authorization"
     }
         
+    var pathParams: [URLQueryItem]?
     var queryParams: [QueryParameter]?
     var body: [String: Any]?
     private let url: String
@@ -31,21 +33,20 @@ struct RequestPerformer: IRequestPerformer {
     init(
         url: String,
         method: HttpMethod,
-        token: String?,
-        queryParams: [QueryParameter]? = nil,
-        body: [String: Any]? = nil
+        token: String?
     ) {
         self.url = url
         self.method = method
         self.token = token
-        self.queryParams = queryParams
-        self.body = body
     }
     
     func perform<ResponseModel: Decodable>(
         completion: @escaping (Result<ResponseModel, ServiceError>) -> Void
     ) {
-        guard let url = URL(string: url) else {
+        var urlComponents = URLComponents(string: url)
+        urlComponents?.queryItems = pathParams
+        
+        guard let url = urlComponents?.url else {
             completion(.failure(.invalidUrlError))
             return
         }
@@ -72,19 +73,33 @@ struct RequestPerformer: IRequestPerformer {
                 request.setValue("\($0.value)", forHTTPHeaderField: "\($0.forHeader)")
             }
         
+        print("""
+        DEBUG:
+        URL: \(url.absoluteString)
+        Method: \(method.rawValue)
+        Token: \(token ?? "")
+        PathParams: \(pathParams ?? [])
+        QueryParams: \(queryParams ?? [])
+        Body: \(body ?? [:])
+        ----
+        """)
+        
         URLSession.shared.dataTask(with: request) { data, response, error in
             guard error == nil else {
                 completion(.failure(.noInternetConnectionError))
+                print("DEBUG: \(ServiceError.noInternetConnectionError.localizedDescription)")
                 return
             }
 
             guard let response = response as? HTTPURLResponse, (200...299).contains(response.statusCode) else {
                 completion(.failure(.serverError))
+                print("DEBUG: \(ServiceError.serverError.localizedDescription)")
                 return
             }
 
             guard let data, !data.isEmpty else {
                 completion(.failure(.emptyDataError))
+                print("DEBUG: \(ServiceError.emptyDataError.localizedDescription)")
                 return
             }
 
@@ -93,6 +108,7 @@ struct RequestPerformer: IRequestPerformer {
                 completion(.success(responseData))
             } catch {
                 completion(.failure(.invalidParsingError))
+                print("DEBUG: \(ServiceError.invalidParsingError.localizedDescription)")
             }
         }.resume()
     }

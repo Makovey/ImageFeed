@@ -64,6 +64,9 @@ final class SplashPresenter: ISplashPresenter {
             DispatchQueue.main.async {
                 switch result {
                 case let .success(model):
+                    if let username = model.username {
+                        ProfileImageService.shared.fetchProfileImageURL(username: username)
+                    }
                     self.view?.dismissAuthScreen()
                     self.router?.openImageList(profileData: model)
                 case .failure:

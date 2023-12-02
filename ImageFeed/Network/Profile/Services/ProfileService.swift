@@ -15,9 +15,6 @@ final class ProfileService: IProfileService {
     private struct Constant {
         static let baseUrl = "https://api.unsplash.com"
         static let profileEndpoint = "/me"
-        
-        static let bearer = "Bearer"
-        static let authorization = "Authorization"
     }
     
     // MARK: - Properties
