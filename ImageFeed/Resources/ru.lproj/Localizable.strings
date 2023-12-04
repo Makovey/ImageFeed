@@ -7,3 +7,7 @@
 */
 
 "auth.button.title" = "Войти";
+
+"splash.alert.title" = "Что-то пошло не так";
+"splash.alert.subtitle" = "Непредвиденная ошибка";
+"splash.alertButton.title" = "Попробовать еще раз";

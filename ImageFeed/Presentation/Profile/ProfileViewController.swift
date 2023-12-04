@@ -9,6 +9,7 @@ import UIKit
 
 protocol IProfileViewController {
     func updateProfileData(data: ProfileViewModel)
+    func updateAvatar()
 }
 
 final class ProfileViewController: UIViewController {
@@ -122,5 +123,9 @@ extension ProfileViewController: IProfileViewController {
         nameLabel.text = data.name
         loginNameLabel.text = data.loginName
         descriptionLabel.text = data.bio
+    }
+    
+    func updateAvatar() {
+        // TODO: added implementation
     }
 }

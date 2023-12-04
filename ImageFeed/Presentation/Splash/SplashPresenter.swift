@@ -52,7 +52,7 @@ final class SplashPresenter: ISplashPresenter {
                 self.storage.token = success.accessToken
                 self.fetchProfileData()
             case .failure:
-                break // TODO: error handling
+                self.view?.showAlert() { self.loadData() }
             }
         }
     }
@@ -70,7 +70,7 @@ final class SplashPresenter: ISplashPresenter {
                     self.view?.dismissAuthScreen()
                     self.router?.openImageList(profileData: model)
                 case .failure:
-                    break // TODO: error handling
+                    self.view?.showAlert() { self.fetchProfileData() }
                 }
             }
         }

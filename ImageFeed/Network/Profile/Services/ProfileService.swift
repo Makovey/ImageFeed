@@ -13,7 +13,6 @@ protocol IProfileService {
 
 final class ProfileService: IProfileService {
     private struct Constant {
-        static let baseUrl = "https://api.unsplash.com"
         static let profileEndpoint = "/me"
     }
     
@@ -29,7 +28,7 @@ final class ProfileService: IProfileService {
     
     func fetchProfile(completion: @escaping (Result<ProfileResult, ServiceError>) -> Void) {
         let performer = RequestPerformer(
-            url: "\(Constant.baseUrl)\(Constant.profileEndpoint)",
+            url: AppConstant.defaultBaseURL + Constant.profileEndpoint,
             method: .getMethod,
             token: storage.token
         )

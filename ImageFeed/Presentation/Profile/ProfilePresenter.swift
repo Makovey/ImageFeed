@@ -17,6 +17,7 @@ final class ProfilePresenter: IProfilePresenter {
 
     var view: IProfileViewController?
     private let profileData: ProfileResult
+    private var profileImageServiceObserver: NSObjectProtocol?
     
     // MARK: - Init
 
@@ -27,6 +28,20 @@ final class ProfilePresenter: IProfilePresenter {
     func viewDidLoad() {
         let viewModel = makeProfileViewModel(data: profileData)
         view?.updateProfileData(data: viewModel)
+        addAvatarUrlObserver()
+    }
+    
+    private func addAvatarUrlObserver() {
+        profileImageServiceObserver = NotificationCenter.default.addObserver(
+            forName: ProfileImageService.didChangeNotificationName,
+            object: nil,
+            queue: .main
+        ) { [weak self] _ in
+            guard let self else { return }
+            self.makeAvatar()
+        }
+        
+        makeAvatar()
     }
     
     private func makeProfileViewModel(data: ProfileResult) -> ProfileViewModel {
@@ -36,5 +51,13 @@ final class ProfilePresenter: IProfilePresenter {
             loginName: data.username != nil ? "@\(data.username!)" : "",
             bio: data.bio
         )
+    }
+    
+    private func makeAvatar() {
+        guard let profileImage = ProfileImageService.shared.avatarURL,
+              let url = URL(string: profileImage)
+        else { return }
+        
+        print(url)
     }
 }

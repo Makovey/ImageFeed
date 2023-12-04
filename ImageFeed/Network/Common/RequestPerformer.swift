@@ -8,9 +8,10 @@
 import Foundation
 
 protocol IRequestPerformer {
+    @discardableResult
     func perform<ResponseModel: Decodable>(
         completion: @escaping (Result<ResponseModel, ServiceError>) -> Void
-    )
+    ) -> URLSessionTask?
     
     var pathParams: [URLQueryItem]? { get set }
     var queryParams: [QueryParameter]? { get set }
@@ -40,15 +41,16 @@ struct RequestPerformer: IRequestPerformer {
         self.token = token
     }
     
+    @discardableResult
     func perform<ResponseModel: Decodable>(
         completion: @escaping (Result<ResponseModel, ServiceError>) -> Void
-    ) {
+    ) -> URLSessionTask? {
         var urlComponents = URLComponents(string: url)
         urlComponents?.queryItems = pathParams
         
         guard let url = urlComponents?.url else {
             completion(.failure(.invalidUrlError))
-            return
+            return nil
         }
     
         var request = URLRequest(url: url)
@@ -62,7 +64,7 @@ struct RequestPerformer: IRequestPerformer {
             let data = try? JSONSerialization.data(withJSONObject: body)
             guard let data else {
                 completion(.failure(.serializeBodyError))
-                return
+                return nil
             }
 
             request.httpBody = data
@@ -75,8 +77,7 @@ struct RequestPerformer: IRequestPerformer {
         
         print("""
         DEBUG:
-        URL: \(url.absoluteString)
-        Method: \(method.rawValue)
+        \(method.rawValue): \(url.absoluteString)
         Token: \(token ?? "")
         PathParams: \(pathParams ?? [])
         QueryParams: \(queryParams ?? [])
@@ -84,7 +85,7 @@ struct RequestPerformer: IRequestPerformer {
         ----
         """)
         
-        URLSession.shared.dataTask(with: request) { data, response, error in
+        let task = URLSession.shared.dataTask(with: request) { data, response, error in
             guard error == nil else {
                 completion(.failure(.noInternetConnectionError))
                 print("DEBUG: \(ServiceError.noInternetConnectionError.localizedDescription)")
@@ -110,6 +111,9 @@ struct RequestPerformer: IRequestPerformer {
                 completion(.failure(.invalidParsingError))
                 print("DEBUG: \(ServiceError.invalidParsingError.localizedDescription)")
             }
-        }.resume()
+        }
+        task.resume()
+        
+        return task
     }
 }

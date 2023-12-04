@@ -15,6 +15,12 @@ final class OAuth2Service: IOAuth2Service {
     private struct Constant {
         static let baseUrl = "https://unsplash.com/oauth"
         static let tokenUrl = "/token"
+        
+        static let clientId = "client_id"
+        static let clientSecret = "client_secret"
+        static let redirectUri = "redirect_uri"
+        static let code = "code"
+        static let grantType = "grant_type"
         static let authCode = "authorization_code"
     }
     
@@ -26,58 +32,33 @@ final class OAuth2Service: IOAuth2Service {
         guard lastCode != code else { return }
         task?.cancel()
         lastCode = code
-
-        var urlComponents = URLComponents(string: Constant.baseUrl + Constant.tokenUrl)
         
-        urlComponents?.queryItems = [
-            URLQueryItem(name: "client_id", value: AppConstant.accessKey),
-            URLQueryItem(name: "client_secret", value: AppConstant.secretKey),
-            URLQueryItem(name: "redirect_uri", value: AppConstant.redirectUri),
-            URLQueryItem(name: "code", value: code),
-            URLQueryItem(name: "grant_type", value: Constant.authCode)
+        var performer = RequestPerformer(
+            url: Constant.baseUrl + Constant.tokenUrl,
+            method: .postMethod,
+            token: nil
+        )
+        
+        performer.pathParams = [
+            URLQueryItem(name: Constant.clientId, value: AppConstant.accessKey),
+            URLQueryItem(name: Constant.clientSecret, value: AppConstant.secretKey),
+            URLQueryItem(name: Constant.redirectUri, value: AppConstant.redirectUri),
+            URLQueryItem(name: Constant.code, value: code),
+            URLQueryItem(name: Constant.grantType, value: Constant.authCode)
         ]
         
-        guard let url = urlComponents?.url else {
-            completion(.failure(.invalidUrlError))
-            return
+        performer.body = [
+            Constant.clientId: AppConstant.accessKey,
+            Constant.clientSecret: AppConstant.secretKey,
+            Constant.redirectUri: AppConstant.redirectUri,
+            Constant.code: code,
+            Constant.grantType: Constant.authCode
+        ]
+        
+        task = performer.perform { (result: Result<OAuth2TokenResponse, ServiceError>) in
+            self.task = nil
+            self.lastCode = nil
+            completion(result)
         }
-        
-        guard let query = url.query else {
-            completion(.failure(.invalidUrlError))
-            return
-        }
-        
-        var request = URLRequest(url: url)
-        request.httpMethod = HttpMethod.postMethod.rawValue
-        request.httpBody = Data(query.utf8)
-        
-        task = URLSession.shared.dataTask(with: request) { data, response, error in
-            guard error == nil else {
-                self.lastCode = nil
-                completion(.failure(.noInternetConnectionError))
-                return
-            }
-            
-            guard let response = response as? HTTPURLResponse, (200...299).contains(response.statusCode) else {
-                completion(.failure(.serverError))
-                return
-            }
-            
-            guard let data, !data.isEmpty else {
-                completion(.failure(.emptyDataError))
-                return
-            }
-            
-            do {
-                let responseData = try JSONDecoder().decode(OAuth2TokenResponse.self, from: data)
-                self.task = nil
-                self.lastCode = nil
-                completion(.success(responseData))
-            } catch {
-                completion(.failure(.invalidParsingError))
-            }
-        }
-        
-        task?.resume()
     }
 }

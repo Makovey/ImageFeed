@@ -23,6 +23,7 @@ final class WebViewViewController: UIViewController {
     
     var presenter: IWebViewPresenter?
     weak var delegate: IWebViewViewControllerDelegate?
+    private var estimatedProgressObservation: NSKeyValueObservation?
 
     // MARK: - UI
     
@@ -56,39 +57,7 @@ final class WebViewViewController: UIViewController {
         setupUI()
         setupInitialState()
     }
-    
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
 
-        webView.addObserver(
-            self,
-            forKeyPath: #keyPath(WKWebView.estimatedProgress),
-            options: .new,
-            context: nil
-        )
-    }
-    
-    override func viewDidDisappear(_ animated: Bool) {
-        super.viewDidDisappear(animated)
-
-        webView.removeObserver(
-            self, forKeyPath:#keyPath(WKWebView.estimatedProgress),
-            context: nil
-        )
-    }
-    
-    override func observeValue(
-        forKeyPath keyPath: String?,
-        of object: Any?,
-        change: [NSKeyValueChangeKey : Any]?,
-        context: UnsafeMutableRawPointer?
-    ) {
-        guard keyPath == #keyPath(WKWebView.estimatedProgress) else {
-            super.observeValue(forKeyPath: keyPath, of: object, change: change, context: context)
-            return
-        }
-        updateProgress()
-    }
     
     // MARK: - Private
     
@@ -112,6 +81,14 @@ final class WebViewViewController: UIViewController {
     }
     
     private func setupInitialState() {
+        estimatedProgressObservation = webView.observe(
+            \.estimatedProgress,
+             options: [.new]
+        ) { [weak self] _, _ in
+            guard let self else { return }
+            self.updateProgress()
+        }
+        
         guard let request = presenter?.makeUrlRequest() else { return }
         webView.load(request)
     }

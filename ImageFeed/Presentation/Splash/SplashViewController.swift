@@ -10,6 +10,7 @@ import UIKit
 
 protocol ISplashViewController {
     func dismissAuthScreen()
+    func showAlert(action: @escaping () -> Void)
 }
 
 final class SplashViewController: UIViewController {
@@ -64,5 +65,22 @@ extension SplashViewController: ISplashViewController {
     func dismissAuthScreen() {
         UIBlockingProgressHUD.dismiss()
         dismiss(animated: true)
+    }
+    
+    func showAlert(action: @escaping () -> Void) {
+        let alertViewController = UIAlertController(
+            title: "splash.alert.title".localized,
+            message: "splash.alert.subtitle".localized,
+            preferredStyle: .alert
+        )
+        
+        let action = UIAlertAction(
+            title: "splash.alertButton.title".localized,
+            style: .default,
+            handler: { _ in action() }
+        )
+
+        alertViewController.addAction(action)
+        present(alertViewController, animated: true)
     }
 }
