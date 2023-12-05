@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import SwiftKeychainWrapper
 
 protocol IOAuth2TokenStorage {
     var token: String? { get set }
@@ -18,14 +19,15 @@ struct OAuth2TokenStorage: IOAuth2TokenStorage {
     
     // MARK: - Properties
     
-    private let userDefaults = UserDefaults.standard
+    private let keychain = KeychainWrapper.standard
     
     var token: String? {
         get {
-            userDefaults.string(forKey: Constant.bearerToken)
+            keychain.string(forKey: Constant.bearerToken)
         }
         set {
-            userDefaults.set(newValue, forKey: Constant.bearerToken)
+            guard let newValue else { return }
+            keychain.set(newValue, forKey: Constant.bearerToken)
         }
     }
 }
