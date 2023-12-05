@@ -15,6 +15,6 @@ struct UserResult: Decodable {
     }
     
     struct ProfileImage: Decodable {
-        let medium: String
+        let large: String
     }
 }

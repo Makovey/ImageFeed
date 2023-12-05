@@ -5,11 +5,12 @@
 //  Created by MAKOVEY Vladislav on 24.10.2023.
 //
 
+import Kingfisher
 import UIKit
 
 protocol IProfileViewController {
     func updateProfileData(data: ProfileViewModel)
-    func updateAvatar()
+    func updateAvatar(with url: URL)
 }
 
 final class ProfileViewController: UIViewController {
@@ -125,7 +126,8 @@ extension ProfileViewController: IProfileViewController {
         descriptionLabel.text = data.bio
     }
     
-    func updateAvatar() {
-        // TODO: added implementation
+    func updateAvatar(with url: URL) {
+        profileView.kf.indicatorType = .activity
+        profileView.kf.setImage(with: url)
     }
 }

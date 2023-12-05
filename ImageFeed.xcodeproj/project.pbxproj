@@ -41,9 +41,9 @@
 		5E6F89C82B18E23400FA6666 /* ProfileViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E6F89C72B18E23400FA6666 /* ProfileViewModel.swift */; };
 		5E6F89CB2B18E44200FA6666 /* HttpMethod.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E6F89CA2B18E44200FA6666 /* HttpMethod.swift */; };
 		5E6F89CF2B18E65900FA6666 /* RequestPerformer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E6F89CE2B18E65900FA6666 /* RequestPerformer.swift */; };
-		5E6F89D12B18F1DE00FA6666 /* QueryParameter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E6F89D02B18F1DE00FA6666 /* QueryParameter.swift */; };
 		5E6F89D32B1A05E400FA6666 /* ProfileImageService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E6F89D22B1A05E400FA6666 /* ProfileImageService.swift */; };
 		5E6F89D52B1A05F500FA6666 /* UserResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E6F89D42B1A05F500FA6666 /* UserResult.swift */; };
+		5E71F9962B1F65640086606C /* Kingfisher in Frameworks */ = {isa = PBXBuildFile; productRef = 5E71F9952B1F65640086606C /* Kingfisher */; };
 		5E8133422AE85D8500688D6A /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E8133412AE85D8500688D6A /* ProfileViewController.swift */; };
 		5E9173922B16685100B8B8A9 /* SplashViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E9173912B16685100B8B8A9 /* SplashViewController.swift */; };
 		5E9173942B16699F00B8B8A9 /* SplashPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E9173932B16699F00B8B8A9 /* SplashPresenter.swift */; };
@@ -93,7 +93,6 @@
 		5E6F89C72B18E23400FA6666 /* ProfileViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewModel.swift; sourceTree = "<group>"; };
 		5E6F89CA2B18E44200FA6666 /* HttpMethod.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HttpMethod.swift; sourceTree = "<group>"; };
 		5E6F89CE2B18E65900FA6666 /* RequestPerformer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RequestPerformer.swift; sourceTree = "<group>"; };
-		5E6F89D02B18F1DE00FA6666 /* QueryParameter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QueryParameter.swift; sourceTree = "<group>"; };
 		5E6F89D22B1A05E400FA6666 /* ProfileImageService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileImageService.swift; sourceTree = "<group>"; };
 		5E6F89D42B1A05F500FA6666 /* UserResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserResult.swift; sourceTree = "<group>"; };
 		5E8133412AE85D8500688D6A /* ProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
@@ -111,6 +110,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				5E71F9962B1F65640086606C /* Kingfisher in Frameworks */,
 				5EDEB81A2B17726C00C1EC53 /* ProgressHUD in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -328,7 +328,6 @@
 				5E6F89CE2B18E65900FA6666 /* RequestPerformer.swift */,
 				5EDEB8162B17548400C1EC53 /* ServiceError.swift */,
 				5E6F89CA2B18E44200FA6666 /* HttpMethod.swift */,
-				5E6F89D02B18F1DE00FA6666 /* QueryParameter.swift */,
 			);
 			path = Common;
 			sourceTree = "<group>";
@@ -373,6 +372,7 @@
 			name = ImageFeed;
 			packageProductDependencies = (
 				5EDEB8192B17726C00C1EC53 /* ProgressHUD */,
+				5E71F9952B1F65640086606C /* Kingfisher */,
 			);
 			productName = ImageFeed;
 			productReference = 5E1D66332AD01C0C007693DF /* ImageFeed.app */;
@@ -405,6 +405,7 @@
 			mainGroup = 5E1D662A2AD01C0C007693DF;
 			packageReferences = (
 				5EDEB8182B17726C00C1EC53 /* XCRemoteSwiftPackageReference "ProgressHUD" */,
+				5E71F9942B1F65640086606C /* XCRemoteSwiftPackageReference "Kingfisher" */,
 			);
 			productRefGroup = 5E1D66342AD01C0C007693DF /* Products */;
 			projectDirPath = "";
@@ -441,7 +442,6 @@
 				5E6F89D52B1A05F500FA6666 /* UserResult.swift in Sources */,
 				5E9173942B16699F00B8B8A9 /* SplashPresenter.swift in Sources */,
 				5E6545EE2B14BF52004B7510 /* OAuth2Service.swift in Sources */,
-				5E6F89D12B18F1DE00FA6666 /* QueryParameter.swift in Sources */,
 				5E6545F02B14FA35004B7510 /* OAuth2TokenStorage.swift in Sources */,
 				5E9173992B1669C100B8B8A9 /* SplashAssembly.swift in Sources */,
 				5E6F89CF2B18E65900FA6666 /* RequestPerformer.swift in Sources */,
@@ -701,6 +701,14 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		5E71F9942B1F65640086606C /* XCRemoteSwiftPackageReference "Kingfisher" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/onevcat/Kingfisher";
+			requirement = {
+				kind = exactVersion;
+				version = 7.10.0;
+			};
+		};
 		5EDEB8182B17726C00C1EC53 /* XCRemoteSwiftPackageReference "ProgressHUD" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/relatedcode/ProgressHUD";
@@ -712,6 +720,11 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		5E71F9952B1F65640086606C /* Kingfisher */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 5E71F9942B1F65640086606C /* XCRemoteSwiftPackageReference "Kingfisher" */;
+			productName = Kingfisher;
+		};
 		5EDEB8192B17726C00C1EC53 /* ProgressHUD */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 5EDEB8182B17726C00C1EC53 /* XCRemoteSwiftPackageReference "ProgressHUD" */;

@@ -14,7 +14,7 @@ protocol IRequestPerformer {
     ) -> URLSessionTask?
     
     var pathParams: [URLQueryItem]? { get set }
-    var queryParams: [QueryParameter]? { get set }
+    var queryParams: [String: Any]? { get set }
     var body: [String: Any]? { get set }
 }
 
@@ -25,7 +25,7 @@ struct RequestPerformer: IRequestPerformer {
     }
         
     var pathParams: [URLQueryItem]?
-    var queryParams: [QueryParameter]?
+    var queryParams: [String: Any]?
     var body: [String: Any]?
     private let url: String
     private let method: HttpMethod
@@ -72,15 +72,15 @@ struct RequestPerformer: IRequestPerformer {
         
         queryParams?
             .forEach {
-                request.setValue("\($0.value)", forHTTPHeaderField: "\($0.forHeader)")
+                request.setValue("\($0.value)", forHTTPHeaderField: "\($0.key)")
             }
         
         print("""
         DEBUG:
-        \(method.rawValue): \(url.absoluteString)
+        \(request.httpMethod ?? ""): \(request.url?.absoluteString ?? "")
         Token: \(token ?? "")
         PathParams: \(pathParams ?? [])
-        QueryParams: \(queryParams ?? [])
+        QueryParams: \(queryParams ?? [:])
         Body: \(body ?? [:])
         ----
         """)

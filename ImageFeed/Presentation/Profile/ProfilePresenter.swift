@@ -58,6 +58,6 @@ final class ProfilePresenter: IProfilePresenter {
               let url = URL(string: profileImage)
         else { return }
         
-        print(url)
+        view?.updateAvatar(with: url)
     }
 }

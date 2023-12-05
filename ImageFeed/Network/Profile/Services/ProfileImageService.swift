@@ -41,11 +41,11 @@ final class ProfileImageService {
             
             switch result {
             case let .success(userResult):
-                self.avatarURL = userResult.profileImage.medium
+                self.avatarURL = userResult.profileImage.large
                 NotificationCenter.default.post(
                     name: ProfileImageService.didChangeNotificationName,
                     object: self,
-                    userInfo: [Constant.url: userResult.profileImage.medium]
+                    userInfo: [Constant.url: userResult.profileImage.large]
                 )
             case .failure:
                 break // TODO: error handling
