@@ -8,7 +8,7 @@
 import Foundation
 
 protocol ISplashPresenter {
-    func checkUserAuth()
+    func loadData()
     func didAuthenticated(with code: String)
 }
 
@@ -16,40 +16,64 @@ final class SplashPresenter: ISplashPresenter {
     
     // MARK: - Properties
     
+    weak var view: ISplashViewController?
     var router: ISplashRouter?
-    private let service: IOAuth2Service
+    private let oAuthService: IOAuth2Service
+    private let profileService: IProfileService
     private var storage: IOAuth2TokenStorage
     
     // MARK: - Init
 
     init(
-        service: IOAuth2Service,
+        oAuthService: IOAuth2Service,
+        profileService: IProfileService,
         storage: IOAuth2TokenStorage
     ) {
-        self.service = service
+        self.oAuthService = oAuthService
+        self.profileService = profileService
         self.storage = storage
     }
     
-    func checkUserAuth() {
+    func loadData() {
         guard storage.token != nil else {
             router?.openAuthFlow()
             return
         }
         
-        router?.openImageList()
+        fetchProfileData()
     }
     
     func didAuthenticated(with code: String) {
-        service.fetchToken(code: code) { [weak self] result in
+        view?.showLoader()
+        oAuthService.fetchToken(code: code) { [weak self] result in
             guard let self else { return }
-
+            
+            switch result {
+            case .success(let success):
+                self.storage.token = success.accessToken
+                self.fetchProfileData()
+            case .failure:
+                self.view?.dismissLoader()
+                self.view?.showAlert() { self.loadData() }
+            }
+        }
+    }
+    
+    private func fetchProfileData() {
+        profileService.fetchProfile { [weak self] result in
+            guard let self else { return }
+            
             DispatchQueue.main.async {
                 switch result {
-                case .success(let success):
-                    self.storage.token = success.accessToken
-                    self.router?.openImageList()
+                case let .success(model):
+                    if let username = model.username {
+                        ProfileImageService.shared.fetchProfileImageURL(username: username)
+                    }
+                    self.view?.dismissLoader()
+                    self.router?.openImageList(profileData: model)
                 case .failure:
-                    break // TODO: error handling
+                    self.view?.dismissLoader()
+                    self.view?.showAlert() { self.fetchProfileData() }
                 }
             }
         }

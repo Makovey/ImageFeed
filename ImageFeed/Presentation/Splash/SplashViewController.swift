@@ -5,7 +5,14 @@
 //  Created by MAKOVEY Vladislav on 28.11.2023.
 //
 
+import ProgressHUD
 import UIKit
+
+protocol ISplashViewController: AnyObject {
+    func showLoader()
+    func dismissLoader()
+    func showAlert(action: @escaping () -> Void)
+}
 
 final class SplashViewController: UIViewController {
     
@@ -25,7 +32,7 @@ final class SplashViewController: UIViewController {
         super.viewDidAppear(animated)
         
         setupUI()
-        presenter?.checkUserAuth()
+        presenter?.loadData()
     }
     
     override var preferredStatusBarStyle: UIStatusBarStyle {
@@ -48,7 +55,36 @@ final class SplashViewController: UIViewController {
 
 extension SplashViewController: IAuthViewControllerDelegate {
     func authViewController(_ vc: AuthViewController, didAuthenticateWithCode code: String) {
-        presenter?.didAuthenticated(with: code)
         vc.dismiss(animated: true)
+        presenter?.didAuthenticated(with: code)
+    }
+}
+
+// MARK: - ISplashViewController
+
+extension SplashViewController: ISplashViewController {
+    func showLoader() {
+        UIBlockingProgressHUD.show()
+    }
+    
+    func dismissLoader() {
+        UIBlockingProgressHUD.dismiss()
+    }
+    
+    func showAlert(action: @escaping () -> Void) {
+        let alertViewController = UIAlertController(
+            title: "splash.alert.title".localized,
+            message: "splash.alert.subtitle".localized,
+            preferredStyle: .alert
+        )
+        
+        let action = UIAlertAction(
+            title: "splash.alertButton.title".localized,
+            style: .default,
+            handler: { _ in action() }
+        )
+
+        alertViewController.addAction(action)
+        present(alertViewController, animated: true)
     }
 }

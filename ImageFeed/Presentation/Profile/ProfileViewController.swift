@@ -5,7 +5,13 @@
 //  Created by MAKOVEY Vladislav on 24.10.2023.
 //
 
+import Kingfisher
 import UIKit
+
+protocol IProfileViewController: AnyObject {
+    func updateProfileData(data: ProfileViewModel)
+    func updateAvatar(with url: URL)
+}
 
 final class ProfileViewController: UIViewController {
     private struct Constant {
@@ -13,6 +19,10 @@ final class ProfileViewController: UIViewController {
         static let baseSpacing: CGFloat = 8.0
         static let imageSize: CGFloat = 70.0
     }
+    
+    // MARK: - Properties
+    
+    var presenter: IProfilePresenter?
     
     // MARK: - UI
     
@@ -38,21 +48,18 @@ final class ProfileViewController: UIViewController {
     
     private lazy var nameLabel: UILabel = {
         let label = UILabel()
-        label.text = "Екатерина Новикова"
         label.font = .systemFont(ofSize: 23, weight: .bold)
         label.textColor = .ypWhite
         return label
     }()
-    private lazy var emailLabel: UILabel = {
+    private lazy var loginNameLabel: UILabel = {
         let label = UILabel()
-        label.text = "@ekaterina_nov"
         label.font = .systemFont(ofSize: 13)
         label.textColor = .ypGray
         return label
     }()
     private lazy var descriptionLabel: UILabel = {
         let label = UILabel()
-        label.text = "Hello, world!"
         label.font = .systemFont(ofSize: 13)
         label.textColor = .ypWhite
         label.numberOfLines = 0
@@ -60,7 +67,7 @@ final class ProfileViewController: UIViewController {
     }()
     
     private lazy var infoStackView: UIStackView = {
-        let stackView = UIStackView(arrangedSubviews: [nameLabel, emailLabel, descriptionLabel])
+        let stackView = UIStackView(arrangedSubviews: [nameLabel, loginNameLabel, descriptionLabel])
         stackView.axis = .vertical
         stackView.spacing = Constant.baseSpacing
         return stackView
@@ -71,9 +78,10 @@ final class ProfileViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         view.backgroundColor = .ypBlack
+        
         setupUI()
+        presenter?.viewDidLoad()
     }
 
     // MARK: - Private
@@ -108,5 +116,18 @@ final class ProfileViewController: UIViewController {
             infoStackView.left.constraint(equalTo: view.left, constant: Constant.baseInset),
             infoStackView.right.constraint(equalTo: view.right, constant: -Constant.baseInset)
         ])
+    }
+}
+
+extension ProfileViewController: IProfileViewController {
+    func updateProfileData(data: ProfileViewModel) {
+        nameLabel.text = data.name
+        loginNameLabel.text = data.loginName
+        descriptionLabel.text = data.bio
+    }
+    
+    func updateAvatar(with url: URL) {
+        profileView.kf.indicatorType = .activity
+        profileView.kf.setImage(with: url)
     }
 }
