@@ -9,7 +9,8 @@ import ProgressHUD
 import UIKit
 
 protocol ISplashViewController {
-    func dismissAuthScreen()
+    func showLoader()
+    func dismissLoader()
     func showAlert(action: @escaping () -> Void)
 }
 
@@ -54,7 +55,7 @@ final class SplashViewController: UIViewController {
 
 extension SplashViewController: IAuthViewControllerDelegate {
     func authViewController(_ vc: AuthViewController, didAuthenticateWithCode code: String) {
-        UIBlockingProgressHUD.show()
+        vc.dismiss(animated: true)
         presenter?.didAuthenticated(with: code)
     }
 }
@@ -62,9 +63,12 @@ extension SplashViewController: IAuthViewControllerDelegate {
 // MARK: - ISplashViewController
 
 extension SplashViewController: ISplashViewController {
-    func dismissAuthScreen() {
+    func showLoader() {
+        UIBlockingProgressHUD.show()
+    }
+    
+    func dismissLoader() {
         UIBlockingProgressHUD.dismiss()
-        dismiss(animated: true)
     }
     
     func showAlert(action: @escaping () -> Void) {

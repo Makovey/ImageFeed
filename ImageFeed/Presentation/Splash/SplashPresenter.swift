@@ -44,6 +44,7 @@ final class SplashPresenter: ISplashPresenter {
     }
     
     func didAuthenticated(with code: String) {
+        view?.showLoader()
         oAuthService.fetchToken(code: code) { [weak self] result in
             guard let self else { return }
             
@@ -52,6 +53,7 @@ final class SplashPresenter: ISplashPresenter {
                 self.storage.token = success.accessToken
                 self.fetchProfileData()
             case .failure:
+                self.view?.dismissLoader()
                 self.view?.showAlert() { self.loadData() }
             }
         }
@@ -67,9 +69,10 @@ final class SplashPresenter: ISplashPresenter {
                     if let username = model.username {
                         ProfileImageService.shared.fetchProfileImageURL(username: username)
                     }
-                    self.view?.dismissAuthScreen()
+                    self.view?.dismissLoader()
                     self.router?.openImageList(profileData: model)
                 case .failure:
+                    self.view?.dismissLoader()
                     self.view?.showAlert() { self.fetchProfileData() }
                 }
             }
