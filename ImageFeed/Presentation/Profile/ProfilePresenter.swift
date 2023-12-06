@@ -15,7 +15,7 @@ final class ProfilePresenter: IProfilePresenter {
     
     // MARK: - Properties
 
-    var view: IProfileViewController?
+    weak var view: IProfileViewController?
     private let profileData: ProfileResult
     private var profileImageServiceObserver: NSObjectProtocol?
     

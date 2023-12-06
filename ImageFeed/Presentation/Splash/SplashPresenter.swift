@@ -16,7 +16,7 @@ final class SplashPresenter: ISplashPresenter {
     
     // MARK: - Properties
     
-    var view: ISplashViewController?
+    weak var view: ISplashViewController?
     var router: ISplashRouter?
     private let oAuthService: IOAuth2Service
     private let profileService: IProfileService

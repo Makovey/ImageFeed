@@ -26,6 +26,8 @@ final class ProfileImageService {
     
     private let storage: IOAuth2TokenStorage = OAuth2TokenStorage()
     private (set) var avatarURL: String?
+    
+    private init() {}
         
     func fetchProfileImageURL(
         username: String

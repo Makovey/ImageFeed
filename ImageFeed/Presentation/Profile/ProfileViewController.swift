@@ -8,7 +8,7 @@
 import Kingfisher
 import UIKit
 
-protocol IProfileViewController {
+protocol IProfileViewController: AnyObject {
     func updateProfileData(data: ProfileViewModel)
     func updateAvatar(with url: URL)
 }

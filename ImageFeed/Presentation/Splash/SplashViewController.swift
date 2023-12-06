@@ -8,7 +8,7 @@
 import ProgressHUD
 import UIKit
 
-protocol ISplashViewController {
+protocol ISplashViewController: AnyObject {
     func showLoader()
     func dismissLoader()
     func showAlert(action: @escaping () -> Void)
