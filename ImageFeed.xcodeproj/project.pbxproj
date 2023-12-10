@@ -25,6 +25,9 @@
 		5E1D66512AD3F0D4007693DF /* UIView+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E1D66502AD3F0D4007693DF /* UIView+Ext.swift */; };
 		5E1D665D2AD485CE007693DF /* ImagesListCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E1D665C2AD485CE007693DF /* ImagesListCell.swift */; };
 		5E34E19B2ADAFD160056F2D9 /* GradientView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E34E19A2ADAFD160056F2D9 /* GradientView.swift */; };
+		5E3793D42B24933000F5CCD0 /* ImagesListService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E3793D32B24933000F5CCD0 /* ImagesListService.swift */; };
+		5E3793D62B24933E00F5CCD0 /* PhotoViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E3793D52B24933E00F5CCD0 /* PhotoViewModel.swift */; };
+		5E3793DB2B249D5E00F5CCD0 /* PhotoResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E3793DA2B249D5E00F5CCD0 /* PhotoResult.swift */; };
 		5E6545DC2B1327D5004B7510 /* WebViewViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E6545DB2B1327D5004B7510 /* WebViewViewController.swift */; };
 		5E6545DF2B132899004B7510 /* AuthAssembly.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E6545DE2B132899004B7510 /* AuthAssembly.swift */; };
 		5E6545E12B1328B5004B7510 /* AuthRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E6545E02B1328B5004B7510 /* AuthRouter.swift */; };
@@ -78,6 +81,9 @@
 		5E1D66502AD3F0D4007693DF /* UIView+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+Ext.swift"; sourceTree = "<group>"; };
 		5E1D665C2AD485CE007693DF /* ImagesListCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagesListCell.swift; sourceTree = "<group>"; };
 		5E34E19A2ADAFD160056F2D9 /* GradientView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GradientView.swift; sourceTree = "<group>"; };
+		5E3793D32B24933000F5CCD0 /* ImagesListService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagesListService.swift; sourceTree = "<group>"; };
+		5E3793D52B24933E00F5CCD0 /* PhotoViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoViewModel.swift; sourceTree = "<group>"; };
+		5E3793DA2B249D5E00F5CCD0 /* PhotoResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoResult.swift; sourceTree = "<group>"; };
 		5E6545DB2B1327D5004B7510 /* WebViewViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebViewViewController.swift; sourceTree = "<group>"; };
 		5E6545DE2B132899004B7510 /* AuthAssembly.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthAssembly.swift; sourceTree = "<group>"; };
 		5E6545E02B1328B5004B7510 /* AuthRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthRouter.swift; sourceTree = "<group>"; };
@@ -186,8 +192,9 @@
 		5E1D664B2AD3E8B8007693DF /* ImagesList */ = {
 			isa = PBXGroup;
 			children = (
-				5E1C21A52AEE3E39007055A4 /* SingleImage */,
+				5E3793D92B249D3600F5CCD0 /* ViewModels */,
 				5E34E1992ADAFB180056F2D9 /* Cell */,
+				5E1C21A52AEE3E39007055A4 /* SingleImage */,
 				5E1C21A22AEE38AC007055A4 /* ImageListAssembly.swift */,
 				5E1D663A2AD01C0C007693DF /* ImagesListViewController.swift */,
 				5E1C219E2AEE35D6007055A4 /* ImagesListPresenter.swift */,
@@ -213,6 +220,39 @@
 				5E1D665C2AD485CE007693DF /* ImagesListCell.swift */,
 			);
 			path = Cell;
+			sourceTree = "<group>";
+		};
+		5E3793D22B24931D00F5CCD0 /* ImagesList */ = {
+			isa = PBXGroup;
+			children = (
+				5E3793D72B24934900F5CCD0 /* Models */,
+				5E3793D82B24934E00F5CCD0 /* Services */,
+			);
+			path = ImagesList;
+			sourceTree = "<group>";
+		};
+		5E3793D72B24934900F5CCD0 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				5E3793DA2B249D5E00F5CCD0 /* PhotoResult.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		5E3793D82B24934E00F5CCD0 /* Services */ = {
+			isa = PBXGroup;
+			children = (
+				5E3793D32B24933000F5CCD0 /* ImagesListService.swift */,
+			);
+			path = Services;
+			sourceTree = "<group>";
+		};
+		5E3793D92B249D3600F5CCD0 /* ViewModels */ = {
+			isa = PBXGroup;
+			children = (
+				5E3793D52B24933E00F5CCD0 /* PhotoViewModel.swift */,
+			);
+			path = ViewModels;
 			sourceTree = "<group>";
 		};
 		5E6545D92B132697004B7510 /* Auth */ = {
@@ -251,6 +291,7 @@
 				5E6F89CD2B18E48700FA6666 /* Common */,
 				5E6F89BD2B18DECA00FA6666 /* OAuth2 */,
 				5E6F89C02B18DF1600FA6666 /* Profile */,
+				5E3793D22B24931D00F5CCD0 /* ImagesList */,
 			);
 			path = Network;
 			sourceTree = "<group>";
@@ -463,12 +504,15 @@
 				5EF41EA02AF7BFC700266AFA /* AppConstant.swift in Sources */,
 				5E1C21A72AEE3E4D007055A4 /* SingleImageViewController.swift in Sources */,
 				5E1434B62B10A4AF008D2602 /* AuthViewController.swift in Sources */,
+				5E3793D62B24933E00F5CCD0 /* PhotoViewModel.swift in Sources */,
+				5E3793D42B24933000F5CCD0 /* ImagesListService.swift in Sources */,
 				5E6F89B92B18C49500FA6666 /* UIBlockingProgressHUD.swift in Sources */,
 				5E34E19B2ADAFD160056F2D9 /* GradientView.swift in Sources */,
 				5E1D66392AD01C0C007693DF /* SceneDelegate.swift in Sources */,
 				5E9173922B16685100B8B8A9 /* SplashViewController.swift in Sources */,
 				5E6545E72B13CE17004B7510 /* WebViewAssembly.swift in Sources */,
 				5E6F89C82B18E23400FA6666 /* ProfileViewModel.swift in Sources */,
+				5E3793DB2B249D5E00F5CCD0 /* PhotoResult.swift in Sources */,
 				5E6545E32B1328F1004B7510 /* AuthPresenter.swift in Sources */,
 				5E6545EA2B14BD4A004B7510 /* OAuth2TokenResponse.swift in Sources */,
 				5E1C21A12AEE36ED007055A4 /* ImagesListRouter.swift in Sources */,

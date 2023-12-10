@@ -20,6 +20,7 @@ final class SplashPresenter: ISplashPresenter {
     var router: ISplashRouter?
     private let oAuthService: IOAuth2Service
     private let profileService: IProfileService
+    private let profileImageService: IProfileImageService
     private var storage: IOAuth2TokenStorage
     
     // MARK: - Init
@@ -27,10 +28,12 @@ final class SplashPresenter: ISplashPresenter {
     init(
         oAuthService: IOAuth2Service,
         profileService: IProfileService,
+        profileImageService: IProfileImageService,
         storage: IOAuth2TokenStorage
     ) {
         self.oAuthService = oAuthService
         self.profileService = profileService
+        self.profileImageService = profileImageService
         self.storage = storage
     }
     
@@ -67,7 +70,7 @@ final class SplashPresenter: ISplashPresenter {
                 switch result {
                 case let .success(model):
                     if let username = model.username {
-                        ProfileImageService.shared.fetchProfileImageURL(username: username)
+                        self.profileImageService.fetchProfileImageURL(username: username)
                     }
                     self.view?.dismissLoader()
                     self.router?.openImageList(profileData: model)

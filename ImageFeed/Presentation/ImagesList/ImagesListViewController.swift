@@ -7,6 +7,10 @@
 
 import UIKit
 
+protocol IImagesListViewController: AnyObject {
+    func update(viewModels: [PhotoViewModel])
+}
+
 final class ImagesListViewController: UIViewController {
     private struct Constant {
         static let tableViewInset: CGFloat = 16.0
@@ -16,7 +20,9 @@ final class ImagesListViewController: UIViewController {
     // MARK: - Dependencies
 
     var presenter: IImageListPresenter?
+
     private let photosName: [String] = Array(0..<20).map{ "\($0)" }
+    private var photos = [PhotoViewModel]()
     
     // MARK: - UI
 
@@ -38,6 +44,7 @@ final class ImagesListViewController: UIViewController {
         view.backgroundColor = .ypBlack
         
         setupUI()
+        presenter?.fetchPhotos()
     }
     
     // MARK: - Private
@@ -74,6 +81,18 @@ extension ImagesListViewController: UITableViewDelegate {
         let cellHeight = image.size.height * scale + imageInsets.top + imageInsets.bottom
         return cellHeight
     }
+    
+    func tableView(
+        _ tableView: UITableView,
+        willDisplay cell: UITableViewCell,
+        forRowAt indexPath: IndexPath
+    ) {
+        //... indexPath.row + 1 == photos.count then fetch
+        //... не вызывать несколько раз для одного и того же случая
+        if indexPath.row + 1 == photos.count {
+//            presenter.
+        }
+    }
 }
 
 // MARK: - UITableViewDataSource
@@ -94,5 +113,13 @@ extension ImagesListViewController: UITableViewDataSource {
         cell.selectionStyle = .none
         
         return cell
+    }
+}
+
+// MARK: - IImagesListViewController
+
+extension ImagesListViewController: IImagesListViewController {
+    func update(viewModels: [PhotoViewModel]) {
+        photos.append(contentsOf: viewModels)
     }
 }

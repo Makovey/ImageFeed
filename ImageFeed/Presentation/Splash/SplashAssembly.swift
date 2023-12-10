@@ -15,10 +15,12 @@ final class SplashAssembly {
         let oAuthService: IOAuth2Service = OAuth2Service()
         let storage: IOAuth2TokenStorage = OAuth2TokenStorage()
         let profileService: IProfileService = ProfileService(storage: storage)
+        let profileImageService: IProfileImageService = ProfileImageService.shared
 
         let presenter = SplashPresenter(
             oAuthService: oAuthService,
             profileService: profileService,
+            profileImageService: profileImageService,
             storage: storage
         )
         
