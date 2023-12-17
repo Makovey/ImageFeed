@@ -5,6 +5,7 @@
 //  Created by MAKOVEY Vladislav on 09.10.2023.
 //
 
+import Kingfisher
 import UIKit
 
 final class ImagesListCell: UITableViewCell {
@@ -90,13 +91,19 @@ final class ImagesListCell: UITableViewCell {
         ))
     }
     
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        
+        mainImageView.kf.cancelDownloadTask()
+    }
+    
     // MARK: - Configure methods
 
-    func configureCell(with imageName: String, isLikeActive: Bool) {
-        guard let image = UIImage(named: imageName) else { return }
-        self.isLikeActive = isLikeActive
+    func configureCell(with viewModel: PhotoViewModel, completion: @escaping () -> Void) {
+        guard let imageUrl = URL(string: viewModel.thumbImageUrl) else { return }
+        self.isLikeActive = viewModel.isLiked
         
-        mainImageView = .init(image: image)
+        fetchImage(with: imageUrl, completion: completion)
         dateLabel.text = dateFormatter.string(from: Date())
         likeButton.setImage(
             isLikeActive ? .activeLike : .disableLike,
@@ -138,5 +145,17 @@ final class ImagesListCell: UITableViewCell {
             isLikeActive ? .activeLike : .disableLike,
             for: .normal
         )
+    }
+    
+    private func fetchImage(with url: URL, completion: @escaping () -> Void) {
+        mainImageView.kf.indicatorType = .activity
+        mainImageView.kf.setImage(with: url, placeholder: UIImage.imagePlaceholder) { result in
+            switch result {
+            case .success:
+                completion()
+            case .failure:
+                break // TODO: error handling
+            }
+        }
     }
 }

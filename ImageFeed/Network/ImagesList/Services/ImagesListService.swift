@@ -23,16 +23,15 @@ final class ImagesListService: IImagesListService {
     
     // MARK: - Properties
     
-    static let shared = ImagesListService()
-    static let didChangeNotification = Notification.Name(Constant.imagesListNotificationName)
-    
-    private let storage: IOAuth2TokenStorage = OAuth2TokenStorage()
+    private let storage: IOAuth2TokenStorage
     private var task: URLSessionTask?
     private var lastLoadedPage = 0
     
     // MARK: - Init
     
-    private init() {}
+    init(storage: IOAuth2TokenStorage) {
+        self.storage = storage
+    }
     
     // MARK: - IImagesListService
     

@@ -12,7 +12,8 @@ final class ImageListAssembly {
         let view = ImagesListViewController()
         let router = ImageListRouter()
         
-        let imagesListService = ImagesListService.shared
+        let storage: IOAuth2TokenStorage = OAuth2TokenStorage()
+        let imagesListService = ImagesListService(storage: storage)
         let presenter = ImageListPresenter(imagesListService: imagesListService)
         
         view.presenter = presenter
