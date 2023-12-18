@@ -8,7 +8,7 @@
 import UIKit
 
 protocol IImageListPresenter {
-    func didImageTapped(image: UIImage?)
+    func didPhotoTap(_ photo: PhotoViewModel)
     func fetchPhotos()
     func didTapLike(with photoId: String, needsToLike: Bool)
 }
@@ -30,8 +30,9 @@ final class ImageListPresenter: IImageListPresenter {
     
     // MARK: - IImageListPresenter
     
-    func didImageTapped(image: UIImage?) {
-        router?.openSingleImage(image: image)
+    func didPhotoTap(_ photo: PhotoViewModel) {
+        guard let url = URL(string: photo.largeImageUrl) else { return }
+        router?.openSingleImage(with: url)
     }
     
     func fetchPhotos() {

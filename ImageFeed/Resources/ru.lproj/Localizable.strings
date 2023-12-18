@@ -11,3 +11,7 @@
 "splash.alert.title" = "Что-то пошло не так";
 "splash.alert.subtitle" = "Непредвиденная ошибка";
 "splash.alertButton.title" = "Попробовать еще раз";
+
+"singleImage.alert.title" = "Что-то пошло не так. Попробовать еще раз?";
+"singleImage.alertButton.noNeed.title" = "Не надо";
+"singleImage.alertButton.retry.title" = "Повторить";

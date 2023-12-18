@@ -75,9 +75,8 @@ final class ImagesListViewController: UIViewController {
 
 extension ImagesListViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-//        let image = UIImage(named: mockPhotosName[indexPath.row])
-//        presenter?.didImageTapped(image: image)
-        // TODO: support dynamic images
+        let photo = photos[indexPath.row]
+        presenter?.didPhotoTap(photo)
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
