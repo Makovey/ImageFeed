@@ -10,6 +10,7 @@ import UIKit
 protocol IImageListPresenter {
     func didImageTapped(image: UIImage?)
     func fetchPhotos()
+    func didTapLike(with photoId: String, needsToLike: Bool)
 }
 
 final class ImageListPresenter: IImageListPresenter {
@@ -51,6 +52,19 @@ final class ImageListPresenter: IImageListPresenter {
 
                 DispatchQueue.main.async {
                     self?.view?.update(viewModels: viewModels)
+                }
+            case .failure:
+                break // TODO: error handling
+            }
+        }
+    }
+    
+    func didTapLike(with photoId: String, needsToLike: Bool) {
+        imagesListService.changeLike(photoId: photoId, needsToLike: needsToLike) { [weak self] result in
+            switch result {
+            case .success:
+                DispatchQueue.main.async {
+                    self?.view?.updateLikeState(on: photoId)
                 }
             case .failure:
                 break // TODO: error handling

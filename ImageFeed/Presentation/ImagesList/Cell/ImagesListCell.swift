@@ -8,6 +8,10 @@
 import Kingfisher
 import UIKit
 
+protocol ImagesListCellDelegate: AnyObject {
+    func imageListCellDidTapLike(_ cell: ImagesListCell)
+}
+
 final class ImagesListCell: UITableViewCell {
     static let reuseIdentifier = "ImagesListCell"
     
@@ -20,7 +24,7 @@ final class ImagesListCell: UITableViewCell {
     
     // MARK: - Properties
 
-    private var isLikeActive = false
+    weak var delegate: ImagesListCellDelegate?
 
     private lazy var dateFormatter: DateFormatter = {
         let formatter = DateFormatter()
@@ -101,16 +105,23 @@ final class ImagesListCell: UITableViewCell {
 
     func configureCell(with viewModel: PhotoViewModel, completion: @escaping () -> Void) {
         guard let imageUrl = URL(string: viewModel.thumbImageUrl) else { return }
-        self.isLikeActive = viewModel.isLiked
         
         fetchImage(with: imageUrl, completion: completion)
         dateLabel.text = dateFormatter.string(from: Date())
+
         likeButton.setImage(
-            isLikeActive ? .activeLike : .disableLike,
+            viewModel.isLiked ? .activeLike : .disableLike,
             for: .normal
         )
         
         setupUI()
+    }
+    
+    func setIsLiked(isLiked: Bool) {
+        likeButton.setImage(
+            isLiked ? .activeLike : .disableLike,
+            for: .normal
+        )
     }
     
     private func setupUI() {
@@ -140,11 +151,7 @@ final class ImagesListCell: UITableViewCell {
     }
     
     @objc private func likeButtonPressed() {
-        isLikeActive = !isLikeActive
-        likeButton.setImage(
-            isLikeActive ? .activeLike : .disableLike,
-            for: .normal
-        )
+        delegate?.imageListCellDidTapLike(self)
     }
     
     private func fetchImage(with url: URL, completion: @escaping () -> Void) {

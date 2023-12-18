@@ -9,6 +9,7 @@ import UIKit
 
 protocol IImagesListViewController: AnyObject {
     func update(viewModels: [PhotoViewModel])
+    func updateLikeState(on photoId: String)
 }
 
 final class ImagesListViewController: UIViewController {
@@ -122,6 +123,7 @@ extension ImagesListViewController: UITableViewDataSource {
             for: indexPath
         ) as? ImagesListCell else { return UITableViewCell() }
         
+        cell.delegate = self
         cell.configureCell(with: photos[indexPath.row]) {
             tableView.reloadRows(at: [indexPath], with: .automatic)
         }
@@ -137,5 +139,39 @@ extension ImagesListViewController: IImagesListViewController {
     func update(viewModels: [PhotoViewModel]) {
         photos.append(contentsOf: viewModels)
         updateTableViewAnimated()
+    }
+    
+    func updateLikeState(on photoId: String) {
+        guard let index = photos.firstIndex(where: { $0.id == photoId }) else { return }
+        let photo = photos[index]
+        let newPhoto = PhotoViewModel(
+            id: photo.id,
+            size: photo.size,
+            createdAt: photo.createdAt,
+            welcomeDescription: photo.welcomeDescription,
+            thumbImageUrl: photo.thumbImageUrl,
+            largeImageUrl: photo.largeImageUrl,
+            isLiked: !photo.isLiked
+        )
+        
+        photos[index] = newPhoto
+        
+        guard let cell = tableView.cellForRow(at: .init(row: index, section: .zero)) as? ImagesListCell else {
+            return
+        }
+        
+        cell.setIsLiked(isLiked: newPhoto.isLiked)
+        UIBlockingProgressHUD.dismiss()
+    }
+}
+
+// MARK: - ImagesListCellDelegate
+
+extension ImagesListViewController: ImagesListCellDelegate {
+    func imageListCellDidTapLike(_ cell: ImagesListCell) {
+        guard let indexPath = tableView.indexPath(for: cell) else { return }
+        let photo = photos[indexPath.row]
+        UIBlockingProgressHUD.show()
+        presenter?.didTapLike(with: photo.id, needsToLike: !photo.isLiked)
     }
 }

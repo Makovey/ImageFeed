@@ -54,6 +54,7 @@
 		5E9173962B1669AC00B8B8A9 /* SplashRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E9173952B1669AC00B8B8A9 /* SplashRouter.swift */; };
 		5E9173992B1669C100B8B8A9 /* SplashAssembly.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E9173982B1669C100B8B8A9 /* SplashAssembly.swift */; };
 		5EDA18692B2B45F300EA336C /* Array+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EDA18682B2B45F300EA336C /* Array+Ext.swift */; };
+		5EDA186B2B2F5BA000EA336C /* Empty.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EDA186A2B2F5BA000EA336C /* Empty.swift */; };
 		5EDEB8172B17548400C1EC53 /* ServiceError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EDEB8162B17548400C1EC53 /* ServiceError.swift */; };
 		5EDEB81A2B17726C00C1EC53 /* ProgressHUD in Frameworks */ = {isa = PBXBuildFile; productRef = 5EDEB8192B17726C00C1EC53 /* ProgressHUD */; };
 		5EDF92652AEACB210042DD43 /* TabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EDF92642AEACB210042DD43 /* TabBarController.swift */; };
@@ -109,6 +110,7 @@
 		5E9173952B1669AC00B8B8A9 /* SplashRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplashRouter.swift; sourceTree = "<group>"; };
 		5E9173982B1669C100B8B8A9 /* SplashAssembly.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplashAssembly.swift; sourceTree = "<group>"; };
 		5EDA18682B2B45F300EA336C /* Array+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Array+Ext.swift"; sourceTree = "<group>"; };
+		5EDA186A2B2F5BA000EA336C /* Empty.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Empty.swift; sourceTree = "<group>"; };
 		5EDEB8162B17548400C1EC53 /* ServiceError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServiceError.swift; sourceTree = "<group>"; };
 		5EDF92642AEACB210042DD43 /* TabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarController.swift; sourceTree = "<group>"; };
 		5EF41E9F2AF7BFC700266AFA /* AppConstant.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppConstant.swift; sourceTree = "<group>"; };
@@ -374,6 +376,7 @@
 				5E6F89CE2B18E65900FA6666 /* RequestPerformer.swift */,
 				5EDEB8162B17548400C1EC53 /* ServiceError.swift */,
 				5E6F89CA2B18E44200FA6666 /* HttpMethod.swift */,
+				5EDA186A2B2F5BA000EA336C /* Empty.swift */,
 			);
 			path = Common;
 			sourceTree = "<group>";
@@ -513,6 +516,7 @@
 				5E34E19B2ADAFD160056F2D9 /* GradientView.swift in Sources */,
 				5E1D66392AD01C0C007693DF /* SceneDelegate.swift in Sources */,
 				5E9173922B16685100B8B8A9 /* SplashViewController.swift in Sources */,
+				5EDA186B2B2F5BA000EA336C /* Empty.swift in Sources */,
 				5E6545E72B13CE17004B7510 /* WebViewAssembly.swift in Sources */,
 				5E6F89C82B18E23400FA6666 /* ProfileViewModel.swift in Sources */,
 				5E3793DB2B249D5E00F5CCD0 /* PhotoResult.swift in Sources */,
