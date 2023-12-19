@@ -36,6 +36,7 @@ final class ProfileViewController: UIViewController {
     private lazy var exitButton: UIButton = {
         let button = UIButton()
         button.setImage(.exitImage, for: .normal)
+        button.addTarget(self, action: #selector(exitButtonTapped), for: .touchUpInside)
         return button
     }()
     
@@ -117,7 +118,14 @@ final class ProfileViewController: UIViewController {
             infoStackView.right.constraint(equalTo: view.right, constant: -Constant.baseInset)
         ])
     }
+    
+    @objc
+    private func exitButtonTapped() {
+        presenter?.exitButtonTapped()
+    }
 }
+
+// MARK: - IProfileViewController
 
 extension ProfileViewController: IProfileViewController {
     func updateProfileData(data: ProfileViewModel) {

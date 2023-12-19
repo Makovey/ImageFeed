@@ -9,6 +9,7 @@ import Foundation
 
 protocol IProfilePresenter {
     func viewDidLoad()
+    func exitButtonTapped()
 }
 
 final class ProfilePresenter: IProfilePresenter {
@@ -16,19 +17,33 @@ final class ProfilePresenter: IProfilePresenter {
     // MARK: - Properties
 
     weak var view: IProfileViewController?
+    var router: IProfileRouter?
+    
     private let profileData: ProfileResult
+    private var storage: IOAuth2TokenStorage
     private var profileImageServiceObserver: NSObjectProtocol?
     
     // MARK: - Init
 
-    init(profileData: ProfileResult) {
+    init(
+        profileData: ProfileResult,
+        storage: IOAuth2TokenStorage
+    ) {
         self.profileData = profileData
+        self.storage = storage
     }
     
     func viewDidLoad() {
         let viewModel = makeProfileViewModel(data: profileData)
         view?.updateProfileData(data: viewModel)
         addAvatarUrlObserver()
+    }
+    
+    func exitButtonTapped() {
+        storage.removeToken()
+        WKCacheCleaner.clean()
+        
+        router?.logout()
     }
     
     private func addAvatarUrlObserver() {
