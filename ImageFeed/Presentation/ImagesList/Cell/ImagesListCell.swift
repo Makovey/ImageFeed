@@ -26,9 +26,9 @@ final class ImagesListCell: UITableViewCell {
 
     weak var delegate: ImagesListCellDelegate?
 
-    private lazy var dateFormatter: DateFormatter = {
+    private static var dateFormatter: DateFormatter = {
         let formatter = DateFormatter()
-        formatter.dateFormat = "dd MMMM yyyy"
+        formatter.dateFormat = "d MMMM yyyy"
         formatter.locale = Locale(identifier: "ru_RU")
         return formatter
     }()
@@ -107,7 +107,10 @@ final class ImagesListCell: UITableViewCell {
         guard let imageUrl = URL(string: viewModel.thumbImageUrl) else { return }
         
         fetchImage(with: imageUrl, completion: completion)
-        dateLabel.text = dateFormatter.string(from: Date())
+        
+        if let date = viewModel.createdAt {
+            dateLabel.text = ImagesListCell.dateFormatter.string(from: date)
+        }
 
         likeButton.setImage(
             viewModel.isLiked ? .activeLike : .disableLike,

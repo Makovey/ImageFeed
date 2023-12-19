@@ -10,7 +10,7 @@ import Foundation
 struct PhotoViewModel {
     let id: String
     let size: CGSize
-    let createdAt: Date
+    let createdAt: Date?
     let welcomeDescription: String?
     let thumbImageUrl: String
     let largeImageUrl: String
