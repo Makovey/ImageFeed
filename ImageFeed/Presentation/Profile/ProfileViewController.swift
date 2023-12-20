@@ -121,7 +121,32 @@ final class ProfileViewController: UIViewController {
     
     @objc
     private func exitButtonTapped() {
-        presenter?.exitButtonTapped()
+        showAlert()
+    }
+    
+    private func showAlert() {
+        let alertViewController = UIAlertController(
+            title: "profile.alert.title".localized,
+            message: "profile.alert.subtitle".localized,
+            preferredStyle: .alert
+        )
+        
+        let yesAction = UIAlertAction(
+            title: "profile.alertButton.yes.title".localized,
+            style: .default,
+            handler: { _ in
+                self.presenter?.exitButtonTapped()
+            }
+        )
+        
+        let noAction = UIAlertAction(
+            title: "profile.alertButton.no.title".localized,
+            style: .default
+        )
+
+        alertViewController.addAction(yesAction)
+        alertViewController.addAction(noAction)
+        present(alertViewController, animated: true)
     }
 }
 

@@ -106,7 +106,6 @@ struct RequestPerformer: IRequestPerformer {
 
             do {
                 let decoder = JSONDecoder()
-                decoder.dateDecodingStrategy = .iso8601
                 let responseData = try decoder.decode(ResponseModel.self, from: data)
                 completion(.success(responseData))
             } catch {

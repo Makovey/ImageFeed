@@ -15,3 +15,8 @@
 "singleImage.alert.title" = "Something went wrong. Try again?";
 "singleImage.alertButton.noNeed.title" = "No need";
 "singleImage.alertButton.retry.title" = "Retry";
+
+"profile.alert.title" = "Bye, bye!";
+"profile.alert.subtitle" = "Are you sure you want to logout?";
+"profile.alertButton.yes.title" = "Yes";
+"profile.alertButton.no.title" = "No";
