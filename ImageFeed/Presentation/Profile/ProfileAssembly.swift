@@ -10,10 +10,14 @@ import UIKit
 final class ProfileAssembly {
     static func assemble(profileData: ProfileResult) -> UIViewController {
         let view = ProfileViewController()
-        let presenter = ProfilePresenter(profileData: profileData)
+        let storage = OAuth2TokenStorage()
+        let presenter = ProfilePresenter(profileData: profileData, storage: storage)
+        let router = ProfileRouter()
         
         view.presenter = presenter
+        router.viewController = view
         presenter.view = view
+        presenter.router = router
         
         return view
     }

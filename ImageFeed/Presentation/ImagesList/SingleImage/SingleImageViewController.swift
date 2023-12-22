@@ -5,6 +5,7 @@
 //  Created by MAKOVEY Vladislav on 29.10.2023.
 //
 
+import Kingfisher
 import UIKit
 
 final class SingleImageViewController: UIViewController {
@@ -19,7 +20,7 @@ final class SingleImageViewController: UIViewController {
     
     // MARK: - Dependencies
     
-    var mainImage: UIImage?
+    private let mainImageUrl: URL
     
     // MARK: - UI
     
@@ -52,7 +53,16 @@ final class SingleImageViewController: UIViewController {
     }()
     
     // MARK: - Lifecycle
-
+    
+    init(mainImageUrl: URL) {
+        self.mainImageUrl = mainImageUrl
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        nil
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .ypBlack
@@ -91,10 +101,19 @@ final class SingleImageViewController: UIViewController {
     }
     
     private func setupInitialState() {
-        if let image = mainImage {
-            imageView.image = image
-            rescaleAndCenterImageInScrollView(image: image)
+        UIBlockingProgressHUD.show()
+        
+        imageView.kf.setImage(with: mainImageUrl) { [weak self] result in
+            UIBlockingProgressHUD.dismiss()
+            
+            switch result {
+            case let .success(imageResult):
+                self?.rescaleAndCenterImageInScrollView(image: imageResult.image)
+            case .failure:
+                self?.showErrorAlert()
+            }
         }
+        
     }
     
     @objc private func backButtonTapped() {
@@ -129,7 +148,33 @@ final class SingleImageViewController: UIViewController {
         let y = (newContentSize.height - visibleRectSize.height) / 2
         scrollView.setContentOffset(CGPoint(x: x, y: y), animated: false)
     }
+    
+    private func showErrorAlert() {
+        let alertViewController = UIAlertController(
+            title: "singleImage.alert.title".localized,
+            message: nil,
+            preferredStyle: .alert
+        )
+        
+        let noNeedAction = UIAlertAction(
+            title: "singleImage.alertButton.noNeed.title".localized,
+            style: .default,
+            handler: { _ in self.dismiss(animated: true) }
+        )
+        
+        let retryAction = UIAlertAction(
+            title: "singleImage.alertButton.retry.title".localized,
+            style: .default,
+            handler: { _ in self.setupInitialState() }
+        )
+
+        alertViewController.addAction(noNeedAction)
+        alertViewController.addAction(retryAction)
+        present(alertViewController, animated: true)
+    }
 }
+
+// MARK: - UIScrollViewDelegate
 
 extension SingleImageViewController: UIScrollViewDelegate {
     func viewForZooming(in scrollView: UIScrollView) -> UIView? {

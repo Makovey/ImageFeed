@@ -10,4 +10,5 @@ import Foundation
 enum HttpMethod: String {
     case getMethod = "GET"
     case postMethod = "POST"
+    case deleteMethod = "DELETE"
 }

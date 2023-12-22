@@ -8,8 +8,8 @@
 import UIKit
 
 final class SingleImageAssembly {
-    static func assemble() -> SingleImageViewController {
-        let view = SingleImageViewController()
+    static func assemble(with url: URL) -> SingleImageViewController {
+        let view = SingleImageViewController(mainImageUrl: url)
         view.overrideUserInterfaceStyle = .dark
         return view
     }

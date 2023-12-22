@@ -5,7 +5,12 @@
 //  Created by MAKOVEY Vladislav on 09.10.2023.
 //
 
+import Kingfisher
 import UIKit
+
+protocol ImagesListCellDelegate: AnyObject {
+    func imageListCellDidTapLike(_ cell: ImagesListCell)
+}
 
 final class ImagesListCell: UITableViewCell {
     static let reuseIdentifier = "ImagesListCell"
@@ -19,12 +24,11 @@ final class ImagesListCell: UITableViewCell {
     
     // MARK: - Properties
 
-    private var isLikeActive = false
+    weak var delegate: ImagesListCellDelegate?
 
-    private lazy var dateFormatter: DateFormatter = {
+    private static var dateFormatter: DateFormatter = {
         let formatter = DateFormatter()
-        formatter.dateFormat = "dd MMMM yyyy"
-        formatter.locale = Locale(identifier: "ru_RU")
+        formatter.dateFormat = "d MMMM yyyy"
         return formatter
     }()
     
@@ -90,20 +94,38 @@ final class ImagesListCell: UITableViewCell {
         ))
     }
     
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        
+        mainImageView.kf.cancelDownloadTask()
+    }
+    
     // MARK: - Configure methods
 
-    func configureCell(with imageName: String, isLikeActive: Bool) {
-        guard let image = UIImage(named: imageName) else { return }
-        self.isLikeActive = isLikeActive
+    func configureCell(with viewModel: PhotoViewModel, completion: @escaping () -> Void) {
+        guard let imageUrl = URL(string: viewModel.thumbImageUrl) else { return }
         
-        mainImageView = .init(image: image)
-        dateLabel.text = dateFormatter.string(from: Date())
+        fetchImage(with: imageUrl, completion: completion)
+        
+        if let date = viewModel.createdAt {
+            dateLabel.text = ImagesListCell.dateFormatter.string(from: date)
+        } else {
+            dateLabel.text = ""
+        }
+
         likeButton.setImage(
-            isLikeActive ? .activeLike : .disableLike,
+            viewModel.isLiked ? .activeLike : .disableLike,
             for: .normal
         )
         
         setupUI()
+    }
+    
+    func setIsLiked(isLiked: Bool) {
+        likeButton.setImage(
+            isLiked ? .activeLike : .disableLike,
+            for: .normal
+        )
     }
     
     private func setupUI() {
@@ -133,10 +155,18 @@ final class ImagesListCell: UITableViewCell {
     }
     
     @objc private func likeButtonPressed() {
-        isLikeActive = !isLikeActive
-        likeButton.setImage(
-            isLikeActive ? .activeLike : .disableLike,
-            for: .normal
-        )
+        delegate?.imageListCellDidTapLike(self)
+    }
+    
+    private func fetchImage(with url: URL, completion: @escaping () -> Void) {
+        mainImageView.kf.indicatorType = .activity
+        mainImageView.kf.setImage(with: url, placeholder: UIImage.imagePlaceholder) { result in
+            switch result {
+            case .success:
+                completion()
+            case .failure:
+                break // TODO: error handling
+            }
+        }
     }
 }

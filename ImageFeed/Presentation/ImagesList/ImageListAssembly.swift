@@ -11,10 +11,14 @@ final class ImageListAssembly {
     static func assemble() -> UIViewController {
         let view = ImagesListViewController()
         let router = ImageListRouter()
-        let presenter = ImageListPresenter()
+        
+        let storage: IOAuth2TokenStorage = OAuth2TokenStorage()
+        let imagesListService = ImagesListService(storage: storage)
+        let presenter = ImageListPresenter(imagesListService: imagesListService)
         
         view.presenter = presenter
         presenter.router = router
+        presenter.view = view
         router.viewController = view
         
         return view

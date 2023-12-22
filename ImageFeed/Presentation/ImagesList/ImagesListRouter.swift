@@ -8,7 +8,7 @@
 import UIKit
 
 protocol IImageListRouter {
-    func openSingleImage(image: UIImage?)
+    func openSingleImage(with url: URL)
 }
 
 final class ImageListRouter: IImageListRouter {
@@ -17,9 +17,8 @@ final class ImageListRouter: IImageListRouter {
 
     weak var viewController: UIViewController?
 
-    func openSingleImage(image: UIImage?) {
-        let destination = SingleImageAssembly.assemble()
-        destination.mainImage = image
+    func openSingleImage(with url: URL) {
+        let destination = SingleImageAssembly.assemble(with: url)
         destination.modalPresentationStyle = .fullScreen
         viewController?.present(destination, animated: true)
     }

@@ -36,6 +36,7 @@ final class ProfileViewController: UIViewController {
     private lazy var exitButton: UIButton = {
         let button = UIButton()
         button.setImage(.exitImage, for: .normal)
+        button.addTarget(self, action: #selector(exitButtonTapped), for: .touchUpInside)
         return button
     }()
     
@@ -117,7 +118,39 @@ final class ProfileViewController: UIViewController {
             infoStackView.right.constraint(equalTo: view.right, constant: -Constant.baseInset)
         ])
     }
+    
+    @objc
+    private func exitButtonTapped() {
+        showAlert()
+    }
+    
+    private func showAlert() {
+        let alertViewController = UIAlertController(
+            title: "profile.alert.title".localized,
+            message: "profile.alert.subtitle".localized,
+            preferredStyle: .alert
+        )
+        
+        let yesAction = UIAlertAction(
+            title: "profile.alertButton.yes.title".localized,
+            style: .default,
+            handler: { _ in
+                self.presenter?.exitButtonTapped()
+            }
+        )
+        
+        let noAction = UIAlertAction(
+            title: "profile.alertButton.no.title".localized,
+            style: .default
+        )
+
+        alertViewController.addAction(yesAction)
+        alertViewController.addAction(noAction)
+        present(alertViewController, animated: true)
+    }
 }
+
+// MARK: - IProfileViewController
 
 extension ProfileViewController: IProfileViewController {
     func updateProfileData(data: ProfileViewModel) {

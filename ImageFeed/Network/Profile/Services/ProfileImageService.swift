@@ -11,7 +11,7 @@ protocol IProfileImageService {
     func fetchProfileImageURL(username: String)
 }
 
-final class ProfileImageService {
+final class ProfileImageService: IProfileImageService {
     private struct Constant {
         static let usersEndpoint = "/users/"
         
@@ -29,9 +29,7 @@ final class ProfileImageService {
     
     private init() {}
         
-    func fetchProfileImageURL(
-        username: String
-    ) {
+    func fetchProfileImageURL(username: String) {
         let performer: IRequestPerformer = RequestPerformer(
             url: AppConstant.defaultBaseURL + Constant.usersEndpoint + username,
             method: .getMethod,

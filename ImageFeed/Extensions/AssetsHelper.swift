@@ -25,4 +25,5 @@ extension UIImage {
     static let sharing = UIImage(named: "Sharing") ?? .init()
     static let authScreenImage  = UIImage(named: "AuthImage") ?? .init()
     static let launchLogo  = UIImage(named: "LaunchLogo") ?? .init()
+    static let imagePlaceholder = UIImage(named: "ImagePlaceholder") ?? .init()
 }
