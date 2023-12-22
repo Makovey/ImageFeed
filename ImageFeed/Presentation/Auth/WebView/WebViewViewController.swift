@@ -13,6 +13,12 @@ protocol IWebViewViewControllerDelegate: AnyObject {
     func webViewViewControllerDidCancel(_ vc: WebViewViewController)
 }
 
+protocol IWebViewViewController: AnyObject {
+    func load(request: URLRequest)
+    func setProgressValue(_ newValue: Float)
+    func setProgressHidden(_ isHidden: Bool)
+}
+
 final class WebViewViewController: UIViewController {
     private struct Constant {
         static let topButtonSpacing: CGFloat = 12.0
@@ -56,6 +62,7 @@ final class WebViewViewController: UIViewController {
         
         setupUI()
         setupInitialState()
+        presenter?.viewDidLoad()
     }
 
     
@@ -86,16 +93,8 @@ final class WebViewViewController: UIViewController {
              options: [.new]
         ) { [weak self] _, _ in
             guard let self else { return }
-            self.updateProgress()
+            presenter?.didUpdateProgressValue(webView.estimatedProgress)
         }
-        
-        guard let request = presenter?.makeUrlRequest() else { return }
-        webView.load(request)
-    }
-    
-    private func updateProgress() {
-        progressView.setProgress(Float(webView.estimatedProgress), animated: true)
-        progressView.isHidden = fabs(webView.estimatedProgress - 1.0) <= 0.0001
     }
     
     @objc
@@ -112,11 +111,27 @@ extension WebViewViewController: WKNavigationDelegate {
         decidePolicyFor navigationAction: WKNavigationAction,
         decisionHandler: @escaping (WKNavigationActionPolicy) -> Void
     ) {
-        guard let code = presenter?.getCode(from: navigationAction) else {
+        guard let code = presenter?.getCode(from: navigationAction.request.url) else {
             decisionHandler(.allow)
             return
         }
         delegate?.webViewViewController(self, didAuthenticateWithCode: code)
         decisionHandler(.cancel)
+    }
+}
+
+// MARK: - IWebViewViewController
+
+extension WebViewViewController: IWebViewViewController {
+    func load(request: URLRequest) {
+        webView.load(request)
+    }
+    
+    func setProgressValue(_ newValue: Float) {
+        progressView.setProgress(newValue, animated: true)
+    }
+    
+    func setProgressHidden(_ isHidden: Bool) {
+        progressView.isHidden = isHidden
     }
 }

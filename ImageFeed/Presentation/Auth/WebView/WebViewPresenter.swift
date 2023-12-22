@@ -9,40 +9,45 @@ import Foundation
 import WebKit
 
 protocol IWebViewPresenter {
-    func makeUrlRequest() -> URLRequest?
-    func getCode(from: WKNavigationAction) -> String?
+    func viewDidLoad()
+    func didUpdateProgressValue(_ newValue: Double)
+    func getCode(from url: URL?) -> String?
 }
 
 final class WebViewPresenter: IWebViewPresenter {
-    private struct Constant {
-        static let authorizeUrl = "https://unsplash.com/oauth/authorize"
-        static let authorizePath = "/oauth/authorize/native"
-        static let code = "code"
+
+    // MARK: - Dependencies
+    
+    weak var view: IWebViewViewController?
+    private let authHelper: IAuthHelper
+    
+    // MARK: - Init
+    
+    init(authHelper: IAuthHelper) {
+        self.authHelper = authHelper
     }
     
-    func makeUrlRequest() -> URLRequest?  {
-        guard var urlComponents = URLComponents(string: Constant.authorizeUrl) else { return nil }
+    func viewDidLoad() {
+        didUpdateProgressValue(0)
         
-        urlComponents.queryItems = [
-            URLQueryItem(name: "client_id", value: AppConstant.accessKey),
-            URLQueryItem(name: "redirect_uri", value: AppConstant.redirectUri),
-            URLQueryItem(name: "response_type", value: "code"),
-            URLQueryItem(name: "scope", value: AppConstant.accessScope)
-        ]
-        
-        guard let url = urlComponents.url else { return nil}
-        
-        return URLRequest(url: url)
+        guard let request = authHelper.makeAuthRequest() else { return }
+        view?.load(request: request)
     }
     
-    func getCode(from navigationAction: WKNavigationAction) -> String? {
-        guard let url = navigationAction.request.url,
-              let urlComponents = URLComponents(string: url.absoluteString),
-              urlComponents.path == Constant.authorizePath,
-              let items = urlComponents.queryItems,
-              let codeItem = items.first(where: { $0.name == Constant.code })
-        else { return nil }
-        
-        return codeItem.value
+    func didUpdateProgressValue(_ newValue: Double) {
+        let newProgressValue = Float(newValue)
+        view?.setProgressValue(newProgressValue)
+
+        let shouldHideProgress = shouldHideProgress(for: newProgressValue)
+        view?.setProgressHidden(shouldHideProgress)
+    }
+    
+    func getCode(from url: URL?) -> String? {
+        guard let url else { return nil }
+        return authHelper.code(from: url)
+    }
+    
+    private func shouldHideProgress(for value: Float) -> Bool {
+        abs(value - 1.0) <= 0.0001
     }
 }
