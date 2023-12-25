@@ -13,3 +13,7 @@ struct ProfileViewModel {
     let loginName: String?
     let bio: String?
 }
+
+// MARK: - Equitable
+
+extension ProfileViewModel: Equatable {}
