@@ -14,15 +14,15 @@ final class ImageFeedUITests: XCTestCase {
         static let loginButton = "Login"
         static let toolbarKeyboardButton = "Готово"
         
-        static let email = "twomvlad@mail.ru" // TODO: - type your email
-        static let password = "HardPass123" // TODO: - type your password
+        static let email = "" // TODO: - type your email
+        static let password = "" // TODO: - type your password
         
         static let likeButton = "LikeButton"
         static let singleImageBackButton = "SingleImageBackButton"
         
-        static let profileName = "Vladislav Makovey" // TODO: - type your profile name
-        static let username = "@makovej" // TODO: - type your username
-        static let bio = "testable bio" // TODO: - type your bio
+        static let profileName = "" // TODO: - type your profile name
+        static let username = "" // TODO: - type your username
+        static let bio = "" // TODO: - type your bio
         
         static let exitButton = "ExitButton"
         static let profileAlert = "ProfileAlert"
