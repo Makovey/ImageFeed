@@ -10,11 +10,14 @@ import UIKit
 final class WebViewAssembly {
     static func assemble(delegate: IWebViewViewControllerDelegate) -> UIViewController {
         let view = WebViewViewController()
-        let presenter = WebViewPresenter()
-
+        
+        let authHelper = AuthHelper()
+        let presenter = WebViewPresenter(authHelper: authHelper)
+        
         view.presenter = presenter
         view.delegate = delegate
-        
+        presenter.view = view
+                
         return view
     }
 }

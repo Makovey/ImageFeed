@@ -42,6 +42,7 @@ final class SingleImageViewController: UIViewController {
         let button = UIButton()
         button.setImage(.backwardArrow, for: .normal)
         button.addTarget(self, action: #selector(backButtonTapped), for: .touchUpInside)
+        button.accessibilityIdentifier = "SingleImageBackButton"
         return button
     }()
     
