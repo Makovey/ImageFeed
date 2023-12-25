@@ -37,6 +37,7 @@ final class WebViewViewController: UIViewController {
         let webView = WKWebView(frame: .zero)
         webView.backgroundColor = .ypWhite
         webView.navigationDelegate = self
+        webView.accessibilityIdentifier = "UnsplashWebView"
         return webView.forAutolayout()
     }()
     

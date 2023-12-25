@@ -37,6 +37,7 @@ final class ProfileViewController: UIViewController {
         let button = UIButton()
         button.setImage(.exitImage, for: .normal)
         button.addTarget(self, action: #selector(exitButtonTapped), for: .touchUpInside)
+        button.accessibilityIdentifier = "ExitButton"
         return button
     }()
     
@@ -131,6 +132,8 @@ final class ProfileViewController: UIViewController {
             preferredStyle: .alert
         )
         
+        alertViewController.view.accessibilityIdentifier = "ProfileAlert"
+
         let yesAction = UIAlertAction(
             title: "profile.alertButton.yes.title".localized,
             style: .default,

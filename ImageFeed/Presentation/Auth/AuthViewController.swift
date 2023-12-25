@@ -44,6 +44,7 @@ final class AuthViewController: UIViewController {
         button.backgroundColor = .ypWhite
         
         button.addTarget(self, action: #selector(entryButtonTapped), for: .touchUpInside)
+        button.accessibilityIdentifier = "Authenticate"
 
         return button
     }()

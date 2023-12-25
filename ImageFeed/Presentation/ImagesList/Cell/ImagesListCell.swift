@@ -66,6 +66,7 @@ final class ImagesListCell: UITableViewCell {
     private lazy var likeButton: UIButton = {
         let button = UIButton()
         button.addTarget(self, action: #selector(likeButtonPressed), for: .touchUpInside)
+        button.accessibilityIdentifier = "LikeButton"
         return button
     }()
     
